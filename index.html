@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tier List -6/1</title>
+    <title>Tier List - Mobile Fix</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
 
     <style>
@@ -16,7 +17,7 @@
             --text-main: #334155;
             --accent: #3b82f6;
             --trash-color: #ef4444;
-            --drawer-width: 400px; /* ตัวแปรความกว้างกระเป๋าในคอม */
+            --drawer-width: 400px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; outline: none; }
@@ -28,7 +29,7 @@
             margin: 0;
             min-height: 100vh;
             display: flex;
-            flex-direction: column; /* มือถือ: เรียงลงมา */
+            flex-direction: column;
             overflow-x: hidden;
         }
 
@@ -46,28 +47,22 @@
         }
         @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; }
-        .modal-input {
-            width: 100%; padding: 12px; border: 2px solid #e2e8f0;
-            border-radius: 12px; margin-bottom: 15px; font-family: 'Kanit'; font-size: 1rem; text-align: center;
-        }
+        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; font-family: 'Kanit'; font-size: 1rem; text-align: center; }
         .modal-btns { display: flex; gap: 10px; }
         .btn-modal { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; }
         .btn-cancel { background: #f1f5f9; color: #64748b; }
         .btn-confirm { background: var(--accent); color: white; }
         .btn-danger { background: var(--trash-color); color: white; }
 
-        /* --- Floating UI (Mobile Default) --- */
+        /* --- Floating UI --- */
         .btn-save-float {
             position: fixed; top: 15px; right: 15px;
             background: #10b981; color: white; border: none;
             width: 50px; height: 50px; border-radius: 50%;
             font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2000; cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s;
         }
-        .btn-save-float:hover { transform: scale(1.1); }
-        .btn-save-float:active { transform: scale(0.9); }
-
         .trash-float {
             position: fixed; bottom: 80px; right: 20px;
             width: 60px; height: 60px;
@@ -76,19 +71,15 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 1.8rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 2000; transition: all 0.3s;
-            border: 3px solid white;
+            z-index: 2000; transition: all 0.3s; border: 3px solid white;
         }
         .trash-float.drag-over { transform: scale(1.2) rotate(10deg); background: #b91c1c; }
 
         /* --- Main Content --- */
         .main-wrapper {
-            width: 100%;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 20px 10px 120px 10px; /* เว้นที่ให้ลิ้นชักมือถือ */
-            transition: all 0.3s;
+            width: 100%; display: flex; flex-direction: column; align-items: center;
+            padding: 20px 10px 120px 10px; transition: all 0.3s;
         }
-
         .capture-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; }
         h1 { color: white; font-weight: 600; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center; }
 
@@ -107,16 +98,17 @@
         .tier-row { display: flex; background: #334155; border-radius: 12px; overflow: hidden; min-height: 90px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
         .tier-del-btn { position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: rgba(0,0,0,0.4); color: white; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
         .tier-rank { width: 80px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 600; color: rgba(255,255,255,0.8); border-right: 1px solid rgba(255,255,255,0.1); cursor: text; text-align: center; }
-        
         .s { background: #f87171; } .a { background: #fb923c; } .b { background: #facc15; } .c { background: #4ade80; } .d { background: #60a5fa; } .new { background: #cbd5e1; color:#334155; }
-        .tier-content { flex-grow: 1; padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; }
+        .tier-content { flex-grow: 1; padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; min-height: 90px; }
         .add-tier-btn { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.3); color: white; height: 45px; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; margin-top: 10px; width: 100%; }
 
-        /* --- Friend Card --- */
+        /* --- Friend Card (Fix Mobile Touch) --- */
         .card {
             width: 65px; height: 65px; background-size: cover; background-position: center;
             border-radius: 10px; cursor: grab; position: relative; background-color: #e2e8f0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: transform 0.2s; touch-action: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); 
+            touch-action: none; /* สำคัญมาก! ห้ามให้ browser เลื่อนจอเมื่อแตะรูป */
+            flex-shrink: 0;
         }
         .card.male { border: 3px solid #7dd3fc; } .card.female { border: 3px solid #f9a8d4; }
         .dookdik { animation: wiggle 0.4s ease-in-out; }
@@ -140,49 +132,21 @@
         .drawer-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; }
         .drawer-content { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: white; }
 
-        /* --- DESKTOP LAYOUT (The Fix) --- */
+        /* --- DESKTOP LAYOUT --- */
         @media (min-width: 1024px) {
-            body { 
-                flex-direction: row; /* จัดเรียงแนวนอน */
-                justify-content: flex-start;
-                align-items: flex-start;
-            }
-            
-            /* Main Content (ซ้าย) */
-            .main-wrapper { 
-                width: calc(100% - var(--drawer-width)); /* พื้นที่ที่เหลือจากกระเป๋า */
-                height: 100vh;
-                overflow-y: auto;
-                padding: 40px;
-                align-items: center;
-                margin-right: var(--drawer-width); /* เว้นที่ขวาให้กระเป๋า */
-            }
-
-            /* Inventory (ขวา - Side Panel) */
+            body { flex-direction: row; justify-content: flex-start; align-items: flex-start; }
+            .main-wrapper { width: calc(100% - var(--drawer-width)); height: 100vh; overflow-y: auto; padding: 40px; align-items: center; margin-right: var(--drawer-width); }
             .inventory-drawer {
-                position: fixed; top: 0; right: 0; bottom: 0; left: auto; /* ยึดขวา */
-                width: var(--drawer-width); height: 100vh;
-                transform: none !important; border-radius: 0;
-                border-left: 1px solid #e2e8f0;
-                box-shadow: -5px 0 20px rgba(0,0,0,0.05);
+                position: fixed; top: 0; right: 0; bottom: 0; left: auto;
+                width: var(--drawer-width); height: 100vh; transform: none !important; border-radius: 0;
+                border-left: 1px solid #e2e8f0; box-shadow: -5px 0 20px rgba(0,0,0,0.05);
             }
             .drawer-header { cursor: default; pointer-events: none; height: 70px; background: white; }
             .drawer-handle { display: none; }
             .drawer-header::after { content: "🗄️ คลังเพื่อน"; font-size: 1.2rem; font-weight: 700; color: #334155; }
-            
-            /* ปรับขนาดการ์ดในคอมให้ใหญ่ขึ้นนิดนึง */
             .card { width: 75px; height: 75px; }
-
-            /* --- ย้ายปุ่ม Save และ ถังขยะ หนี Side Panel --- */
-            .btn-save-float {
-                right: calc(var(--drawer-width) + 30px); /* ขยับออกมาจากกระเป๋า */
-                top: 30px;
-            }
-            
-            .trash-float {
-                right: calc(var(--drawer-width) + 30px); /* ขยับออกมาจากกระเป๋า */
-                bottom: 30px;
-            }
+            .btn-save-float { right: calc(var(--drawer-width) + 30px); top: 30px; }
+            .trash-float { right: calc(var(--drawer-width) + 30px); bottom: 30px; }
         }
     </style>
 </head>
@@ -229,8 +193,8 @@
             <div class="tier-container" id="tier-stack">
                 <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank s" contenteditable="true">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
                 <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank a" contenteditable="true">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank b" contenteditable="true">โหด</div><div class="tier-content" id="tier-b"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank c" contenteditable="true">เฉยๆ</div><div class="tier-content" id="tier-c"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank b" contenteditable="true">ผ่าน</div><div class="tier-content" id="tier-b"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank c" contenteditable="true">พอได้</div><div class="tier-content" id="tier-c"></div></div>
                 <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank d" contenteditable="true">พักก่อน</div><div class="tier-content" id="tier-d"></div></div>
             </div>
             <div class="add-tier-btn" onclick="addNewTier()" data-html2canvas-ignore="true">➕ เพิ่มแถว</div>
@@ -240,13 +204,17 @@
     <div class="inventory-drawer" id="drawer">
         <div class="drawer-header" onclick="toggleDrawer()">
             <div class="drawer-handle"></div>
-            <span class="mobile-hint" style="font-size:0.8rem; color:#94a3b8; font-weight:bold;">📦 แตะเพื่อเปิดกล่องเพื่อน (<span id="count">0</span>)</span>
+            <span style="font-size:0.8rem; color:#94a3b8; font-weight:bold;">📦 แตะเพื่อเปิดกล่องเพื่อน (<span id="count">0</span>)</span>
         </div>
         <div class="drawer-content" id="pool"></div>
     </div>
 
     <script>
-        MobileDragDrop.polyfill({ dragImageCenterOnTouch: true });
+        // ตั้งค่า Polyfill ให้รองรับการสัมผัสได้ดีขึ้น
+        MobileDragDrop.polyfill({ 
+            dragImageCenterOnTouch: true,
+            holdToDrag: 100 // กดค้าง 0.1วิ เพื่อลาก (ป้องกันลั่น)
+        });
 
         const config = { total: 28, maleMax: 12 };
         const eggs = {
@@ -254,23 +222,7 @@
             "card-21": "ข้าวมันไก่น้องใบเฟิร์น", "card-22": "จารบิ๊ก",
             "card-26": "หมางอยเข้าครัว", "card-28": "สพต"
         };
-        let questions = [
-            "จัดอันดับคนที่ปากเหม็นที่สุด", "จัดอันดับคนที่ฟันเหลืองทองคำ", "จัดอันดับคนที่เรียนเก่งจนน่าหมั่นไส้", "จัดอันดับคนที่เท้าเหม็นระดับอาวุธ", "จัดอันดับคนที่ตดเหม็นเงียบแต่พิฆาต",
-            "จัดอันดับคนที่ขี้เกียจอาบน้ำที่สุด", "จัดอันดับคนที่หัวเน่าไม่สระผม", "จัดอันดับคนที่ชอบแคะขี้มูกป้ายโต๊ะ", "จัดอันดับคนที่ตัวเหม็นเปรี้ยวตลอดเวลา", "จัดอันดับคนที่ผมมันแผล็บทอดไข่ได้",
-            "จัดอันดับคนที่ฉลาดแต่ทำตัวแปลก", "จัดอันดับคนที่สอบผ่านแบบงงๆ", "จัดอันดับคนที่ซุ่มเรียนแต่บอกไม่รู้เรื่อง", "จัดอันดับคนที่หน้ามึนเวลาโดนถาม", "จัดอันดับคนที่อ่านหนังสือจนสติหลุด",
-            "จัดอันดับคนที่ขี้งกที่สุดในกลุ่ม", "จัดอันดับคนที่ชอบยืมเงินแล้วไม่คืน", "จัดอันดับคนที่เนียนกินขนมเพื่อน", "จัดอันดับคนที่กินแรงเพื่อนงานกลุ่ม", "จัดอันดับคนที่ทำตัวมีพิรุธตลอดเวลา",
-            "จัดอันดับคนที่แอบหลับเนียนที่สุด", "จัดอันดับคนที่มาสายเป็นอาชีพ", "จัดอันดับคนที่ชอบดองไลน์ข้ามปี", "จัดอันดับคนที่บ่นเก่งเหมือนมีแม่สิง", "จัดอันดับคนที่นกเก่งจนน่าสงสาร",
-            "จัดอันดับคนที่สายมโนตัวแม่", "จัดอันดับคนที่หลงตัวเองที่สุด", "จัดอันดับคนที่ตลกฝืดสนิท", "จัดอันดับคนที่โดนแกงบ่อยที่สุด", "จัดอันดับคนที่หน้าแก่เกินอายุ",
-            "จัดอันดับคนที่หน้าเด็กแต่ใจป้า", "จัดอันดับคนที่สมองปลาทองขี้ลืมสุด", "จัดอันดับคนที่ขี้งอนไร้สาระ", "จัดอันดับคนที่บ้ากล้องที่สุด", "จัดอันดับคนที่สายมูตัวพ่อ",
-            "จัดอันดับคนที่กวนประสาทเบอร์หนึ่ง", "จัดอันดับคนที่หน้านิ่งตึงตลอดวัน", "จัดอันดับคนที่แต่งตัวประหลาดที่สุด", "จัดอันดับคนที่ขี้ตกใจเกินเหตุ", "จัดอันดับคนที่มนุษย์กลางคืนไม่นอน",
-            "จัดอันดับคนที่ชอบทวงบุญคุณ", "จัดอันดับคนที่เจ้าแม่ดราม่าประจำห้อง", "จัดอันดับคนที่ขิงเก่งที่สุด", "จัดอันดับคนที่เถียงคำไม่ตกฟาก", "จัดอันดับคนที่รวยเงียบแต่ขี้งก",
-            "จัดอันดับคนที่ลูกรักอาจารย์ที่สุด", "จัดอันดับคนที่ซื่อบื้อที่สุด", "จัดอันดับคนที่มั่นใจแบบผิดๆ", "จัดอันดับคนที่ชอบสปอยล์หนัง", "จัดอันดับคนที่ติดมือถือที่สุด",
-            "จัดอันดับคนที่ติ่งจนเสียสติ", "จัดอันดับคนที่เต้นพริ้วเกินเบอร์", "จัดอันดับคนที่ร้องเพลงเพี้ยนที่สุด", "จัดอันดับคนที่เก่งคอมแบบแฮกเกอร์", "จัดอันดับคนที่ลายมือไก่เขี่ยสุด",
-            "จัดอันดับคนที่กินจุจนร้านเจ๊ง", "จัดอันดับคนที่ชอบอวดรวย (ปลอม)", "จัดอันดับคนที่น่าจะไม่มีใครเอา", "จัดอันดับคนที่ดองงานจนไฟลนก้น", "จัดอันดับคนที่พูดภาษาต่างดาว",
-            "จัดอันดับคนที่แคปชั่นเสี่ยวที่สุด", "จัดอันดับคนที่แอบมีแฟนเงียบๆ", "จัดอันดับคนที่น่าจะโดนจับคนแรก", "จัดอันดับคนที่ชอบแกล้งเพื่อนแรงๆ", "จัดอันดับคนที่ทำของหายทุกวัน",
-            "จัดอันดับคนที่ความสดใสแบบปลอมๆ", "จัดอันดับคนที่ใจเย็นจนน่าถีบ", "จัดอันดับคนที่กล้าหาญผิดที่", "จัดอันดับคนที่วางแผนเก่งแต่ล่มตลอด", "จัดอันดับคนที่พูดมากจนลิงหลับ",
-            "จัดอันดับคนที่น่าจะเป็นเจ้าพ่อมีม", "จัดอันดับคนที่สร้างคอนเทนต์เกร็งๆ", "จัดอันดับคนที่ลึกลับน่าสงสัย", "จัดอันดับคนที่ขี้กลัวเกินเหตุ", "จัดอันดับคนที่น่าจะเป็นประธานบริษัท"
-        ];
+        let questions = ["จัดอันดับคนที่ปากเหม็นที่สุด", "จัดอันดับคนที่ฟันเหลืองทองคำ", "จัดอันดับคนที่เรียนเก่งจนน่าหมั่นไส้", "จัดอันดับคนที่เท้าเหม็นระดับอาวุธ", "จัดอันดับคนที่ตดเหม็นเงียบแต่พิฆาต"];
 
         window.onload = () => {
             const pool = document.getElementById('pool');
@@ -281,18 +233,50 @@
                 div.id = `card-${i}`;
                 div.draggable = true;
                 div.style.backgroundImage = `url('${i}.jpg')`;
+                
+                // --- แก้ไข Logic การลากและคลิก ---
                 div.addEventListener('dragstart', (e) => {
                     e.dataTransfer.setData("text", e.target.id);
-                    if(window.innerWidth < 1024) { // ปิดลิ้นชักเฉพาะในมือถือ
-                        if(div.parentElement.id === 'pool') closeDrawer();
-                    }
+                    // ไม่ปิด Drawer อัตโนมัติ เพื่อป้องกันการกระตุกในมือถือ
                 });
+
+                // --- เพิ่มระบบ "Tap to Move" (จิ้มเพื่อย้าย) ---
+                div.onclick = () => {
+                    // ถ้าอยู่ในกล่อง -> ย้ายไป Tier S (อันแรกสุดที่มี)
+                    if(div.parentElement.id === 'pool') {
+                        const target = document.querySelector('.tier-content'); // หาช่องแรกสุด
+                        if(target) {
+                            target.appendChild(div);
+                            animateCard(div);
+                            updateCount();
+                        }
+                    } 
+                    // ถ้าอยู่ในตาราง -> ย้ายกลับกล่อง
+                    else {
+                        document.getElementById('pool').appendChild(div);
+                        updateCount();
+                    }
+                };
+
                 pool.appendChild(div);
             }
             updateCount();
             bindDropZones();
         };
 
+        // Helper Animation
+        function animateCard(card) {
+            card.classList.remove('dookdik');
+            void card.offsetWidth;
+            card.classList.add('dookdik');
+            const id = card.id;
+            if(eggs[id]) {
+                const rect = card.getBoundingClientRect();
+                spawnText(rect.left + 30, rect.top, eggs[id]);
+            }
+        }
+
+        // Logic อื่นๆ
         function openInputModal() { document.getElementById('modal-input').classList.add('active'); }
         function openConfirmModal(title, desc, onConfirm) {
             document.getElementById('confirm-title').innerText = title;
@@ -363,10 +347,7 @@
                         setTimeout(() => card.remove(), 400);
                     } else {
                         zone.appendChild(card);
-                        card.classList.remove('dookdik');
-                        void card.offsetWidth; 
-                        card.classList.add('dookdik');
-                        if(eggs[id]) spawnText(e.clientX || e.pageX, e.clientY || e.pageY, eggs[id]);
+                        animateCard(card);
                     }
                     updateCount();
                 };
@@ -377,8 +358,8 @@
             const span = document.createElement('span');
             span.className = 'float-text';
             span.innerText = text;
-            span.style.left = (x - 30) + 'px';
-            span.style.top = (y - 50) + 'px';
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
             document.body.appendChild(span);
             setTimeout(() => span.remove(), 2500);
         }
@@ -419,16 +400,11 @@
             });
         }
 
-        // Drawer Control (เฉพาะ Mobile)
         function toggleDrawer() { 
-            if(window.innerWidth < 1024) {
-                document.getElementById('drawer').classList.toggle('open'); 
-            }
+            if(window.innerWidth < 1024) document.getElementById('drawer').classList.toggle('open'); 
         }
         function closeDrawer() { 
-            if(window.innerWidth < 1024) {
-                document.getElementById('drawer').classList.remove('open'); 
-            }
+            if(window.innerWidth < 1024) document.getElementById('drawer').classList.remove('open'); 
         }
         function updateCount() { document.getElementById('count').innerText = document.getElementById('pool').children.length; }
 
