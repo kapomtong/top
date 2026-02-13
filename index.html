@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tier List - Realtime Firebase</title>
+    <title>Tier List - Admin & Mobile Pro</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
 
     <style>
-        /* --- Styles เดิมที่สมบูรณ์แล้ว --- */
         :root {
             --bg-body: #64748b; --bg-card: #f8fafc; --text-main: #334155;
             --accent: #3b82f6; --trash-color: #ef4444; --drawer-width: 400px;
@@ -19,11 +18,12 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; outline: none; }
         body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Kanit', sans-serif; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* Secret Triggers */
-        .secret-trigger { position: fixed; top: 0; width: 60px; height: 60px; z-index: 9999; }
-        #trigger-left { left: 0; } #trigger-right { right: 0; }
+        /* --- Secret Triggers --- */
+        .secret-trigger { position: fixed; top: 0; width: 80px; height: 80px; z-index: 9999; }
+        #trigger-left { left: 0; } 
+        #trigger-right { right: 0; }
 
-        /* Admin Panel */
+        /* --- Admin Panel (Dashboard UI) --- */
         #admin-panel {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #0f172a; color: #e2e8f0; z-index: 10000;
@@ -31,61 +31,78 @@
         }
         #admin-panel.active { display: flex; }
         .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 15px; margin-bottom: 15px; }
-        #admin-logs { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .log-item {
-            background: #1e293b; padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent);
-            display: flex; justify-content: space-between; align-items: center; animation: slideIn 0.3s;
+        
+        #admin-feed { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        
+        /* Log Card Design */
+        .log-card {
+            background: #1e293b; padding: 15px; border-radius: 12px;
+            display: flex; align-items: center; gap: 15px;
+            border-left: 5px solid var(--accent);
+            animation: slideDown 0.3s ease-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        .log-action { font-size: 0.95rem; font-weight: 500; }
-        .log-meta { font-size: 0.75rem; color: #94a3b8; text-align: right; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .log-icon { font-size: 2rem; background: rgba(255,255,255,0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .log-content { flex-grow: 1; }
+        .log-title { font-weight: 600; font-size: 1rem; color: #fff; }
+        .log-desc { font-size: 0.85rem; color: #94a3b8; }
+        .log-time { font-size: 0.75rem; color: #64748b; min-width: 50px; text-align: right; }
 
-        /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 11000; display: none; justify-content: center; align-items: center; }
-        .modal-overlay.active { display: flex; }
-        .modal-box { background: white; width: 85%; max-width: 320px; border-radius: 24px; padding: 25px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popIn 0.2s; color: #334155; }
-        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; font-family: 'Kanit'; font-size: 1rem; text-align: center; }
-        .btn-modal { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; }
-        .btn-cancel { background: #f1f5f9; color: #64748b; }
-        .btn-confirm { background: var(--accent); color: white; }
-
-        /* Main UI */
+        /* --- Main UI --- */
         .main-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 10px 120px 10px; transition: all 0.3s; }
         .capture-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; }
-        h1 { color: white; font-weight: 600; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center; }
-        .control-panel { background: var(--bg-card); border-radius: 20px; padding: 15px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1 { color: white; font-weight: 600; margin-bottom: 15px; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        .control-panel { background: var(--bg-card); border-radius: 20px; padding: 15px; width: 100%; max-width: 500px; text-align: center; margin-bottom: 20px; }
         #q-text { font-size: 1.2rem; font-weight: 600; color: var(--accent); min-height: 40px; margin-bottom: 10px; }
-        .btn-icon { font-family: 'Kanit'; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; }
+        .btn-icon { width: 45px; height: 45px; border-radius: 50%; font-size: 1.4rem; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; }
         .btn-primary { background: var(--accent); color: white; } .btn-sec { background: #f1f5f9; color: #64748b; }
 
         .tier-container { width: 100%; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 15px; }
         .tier-row { display: flex; background: #334155; border-radius: 12px; overflow: hidden; min-height: 90px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
         .tier-del-btn { position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: rgba(0,0,0,0.4); color: white; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
-        .tier-rank { width: 80px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 600; color: rgba(255,255,255,0.8); border-right: 1px solid rgba(255,255,255,0.1); cursor: text; text-align: center; }
-        .s { background: #f87171; } .a { background: #fb923c; } .b { background: #facc15; } .c { background: #4ade80; } .d { background: #60a5fa; } .new { background: #cbd5e1; color:#334155; }
+        .tier-rank { width: 80px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 600; color: rgba(255,255,255,0.8); border-right: 1px solid rgba(255,255,255,0.1); }
         .tier-content { flex-grow: 1; padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; min-height: 90px; }
-        .add-tier-btn { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.3); color: white; height: 45px; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; margin-top: 10px; width: 100%; }
+        .s { background: #f87171; } .a { background: #fb923c; } .b { background: #facc15; } .c { background: #4ade80; } .d { background: #60a5fa; } .new { background: #cbd5e1; color:#334155; }
+        .add-tier-btn { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.3); color: white; padding: 10px; margin-top: 10px; border-radius: 10px; text-align: center; cursor: pointer; width: 100%; }
 
-        .card { width: 65px; height: 65px; background-size: cover; background-position: center; border-radius: 10px; cursor: grab; position: relative; background-color: #e2e8f0; box-shadow: 0 2px 5px rgba(0,0,0,0.3); touch-action: none; flex-shrink: 0; }
+        /* --- Friend Card (Fix Mobile) --- */
+        .card {
+            width: 65px; height: 65px; background-size: cover; background-position: center;
+            border-radius: 10px; cursor: grab; position: relative; background-color: #e2e8f0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); flex-shrink: 0;
+            /* แก้ไขปัญหามือถือลากไม่ได้ */
+            touch-action: none; 
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+        }
+        .card.selected { border: 3px solid #fbbf24; box-shadow: 0 0 15px #fbbf24; transform: scale(1.1); z-index: 50; } /* Effect ตอนแตะเลือก */
         .card.male { border: 3px solid #7dd3fc; } .card.female { border: 3px solid #f9a8d4; }
+        
         .dookdik { animation: wiggle 0.4s ease-in-out; }
         @keyframes wiggle { 0% { transform: rotate(0deg); } 25% { transform: rotate(-5deg) scale(1.1); } 75% { transform: rotate(5deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1); } }
 
-        .float-text { position: absolute; color: #fbbf24; font-weight: 800; font-size: 1.8rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.6); pointer-events: none; z-index: 9999; white-space: nowrap; animation: floatThenSpin 2.5s ease-in-out forwards; }
-        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -50px) scale(1.1) rotate(0deg); } 100% { opacity: 0; transform: translate(300px, -500px) scale(0.2) rotate(1080deg); } }
-
-        .btn-save-float { position: fixed; top: 15px; right: 15px; background: #10b981; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2000; cursor: pointer; transition: all 0.3s; }
-        .trash-float { position: fixed; bottom: 80px; right: 20px; width: 60px; height: 60px; background: var(--trash-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 2000; transition: all 0.3s; border: 3px solid white; }
-
-        /* Inventory Drawer (Mobile) */
+        /* --- Inventory --- */
         .inventory-drawer { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-radius: 25px 25px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 999; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(calc(100% - 60px)); display: flex; flex-direction: column; height: 50vh; }
         .inventory-drawer.open { transform: translateY(0); }
         .drawer-header { height: 60px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #f8fafc; border-radius: 25px 25px 0 0; border-bottom: 1px solid #e2e8f0; }
         .drawer-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; }
         .drawer-content { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: white; }
 
-        /* Desktop Layout */
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 11000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: white; width: 85%; max-width: 320px; border-radius: 20px; padding: 20px; text-align: center; }
+        .modal-input { width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 10px; margin-bottom: 15px; text-align: center; font-size: 1.2rem; }
+
+        /* Floating UI */
+        .btn-save-float { position: fixed; top: 15px; right: 15px; width: 50px; height: 50px; border-radius: 50%; background: #10b981; color: white; border: none; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; z-index: 2000; cursor: pointer; }
+        .trash-float { position: fixed; bottom: 80px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #ef4444; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; z-index: 2000; border: 3px solid white; transition: 0.2s; }
+        .trash-float.drag-over { transform: scale(1.2); background: #b91c1c; }
+
+        /* Desktop */
         @media (min-width: 1024px) {
             body { flex-direction: row; }
             .main-wrapper { width: calc(100% - var(--drawer-width)); height: 100vh; overflow-y: auto; padding: 40px; margin-right: var(--drawer-width); }
@@ -99,54 +116,48 @@
 </head>
 <body>
 
-    <div id="trigger-left" class="secret-trigger" onclick="openAdminAuth()"></div>
-    <div id="trigger-right" class="secret-trigger" onclick="openAdminAuth()"></div>
-
-    <div id="modal-admin-auth" class="modal-overlay">
-        <div class="modal-box">
-            <div class="modal-title">🔐 ผู้ดูแลระบบ</div>
-            <input id="inp-pin" type="tel" class="modal-input" placeholder="PIN CODE" maxlength="4" style="letter-spacing: 5px; font-weight: bold;">
-            <div style="display:flex; gap:10px;">
-                <button class="btn-modal btn-cancel" onclick="closeModal('modal-admin-auth')">ยกเลิก</button>
-                <button class="btn-modal btn-confirm" onclick="checkPin()">เข้าสู่ระบบ</button>
-            </div>
-        </div>
-    </div>
+    <div id="trigger-left" class="secret-trigger" onclick="registerTap('L')"></div>
+    <div id="trigger-right" class="secret-trigger" onclick="registerTap('R')"></div>
 
     <div id="admin-panel">
         <div class="admin-header">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:1.5rem;">📡</span>
-                <div>
-                    <h2 style="margin:0; font-size:1.1rem;">LIVE MONITOR</h2>
-                    <span style="font-size:0.8rem; color:#94a3b8; font-weight:300;">กำลังเชื่อมต่อ Firebase...</span>
-                </div>
-            </div>
-            <button onclick="closeAdminPanel()" style="background:#ef4444; border:none; color:white; padding:8px 20px; border-radius:8px; cursor:pointer; font-weight:600;">ปิด</button>
+            <h2 style="margin:0; font-size:1.2rem;">📡 ADMIN MONITOR</h2>
+            <button onclick="closeAdminPanel()" style="background:#ef4444; border:none; color:white; padding:8px 20px; border-radius:8px; cursor:pointer;">ปิด</button>
         </div>
-        <div id="admin-logs">
-            <div style="text-align:center; padding:20px; color:#64748b;">รอข้อมูลอัปเดต...</div>
+        <div id="admin-feed">
+            <div style="text-align:center; padding:30px; color:#64748b;">รอสัญญาณข้อมูล...</div>
+        </div>
+    </div>
+
+    <div id="modal-admin-auth" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="margin-top:0;">🔐 ADMIN PIN</h3>
+            <input id="inp-pin" type="tel" class="modal-input" placeholder="****" maxlength="4" style="letter-spacing: 5px; font-weight:bold;">
+            <div style="display:flex; gap:10px;">
+                <button onclick="closeModal('modal-admin-auth')" style="flex:1; padding:10px; border:none; background:#f1f5f9; border-radius:8px;">ยกเลิก</button>
+                <button onclick="checkPin()" style="flex:1; padding:10px; border:none; background:#3b82f6; color:white; border-radius:8px;">เข้าสู่ระบบ</button>
+            </div>
         </div>
     </div>
 
     <div id="modal-input" class="modal-overlay">
         <div class="modal-box">
-            <div class="modal-title">เพิ่มคำถามใหม่</div>
+            <h3>เพิ่มคำถามใหม่</h3>
             <input id="inp-q" class="modal-input" placeholder="...">
             <div style="display:flex; gap:10px;">
-                <button class="btn-modal btn-cancel" onclick="closeModal('modal-input')">ยกเลิก</button>
-                <button class="btn-modal btn-confirm" onclick="confirmAddQ()">เพิ่ม</button>
+                <button onclick="closeModal('modal-input')" style="flex:1; padding:10px; border:none; background:#f1f5f9; border-radius:8px;">ยกเลิก</button>
+                <button onclick="confirmAddQ()" style="flex:1; padding:10px; border:none; background:#3b82f6; color:white; border-radius:8px;">เพิ่ม</button>
             </div>
         </div>
     </div>
 
     <div id="modal-confirm" class="modal-overlay">
         <div class="modal-box">
-            <div class="modal-title" id="confirm-title">ยืนยัน?</div>
-            <div id="confirm-desc" style="margin-bottom:20px;"></div>
+            <h3 id="confirm-title">ยืนยัน?</h3>
+            <p id="confirm-desc" style="color:#64748b;">...</p>
             <div style="display:flex; gap:10px;">
-                <button class="btn-modal btn-cancel" onclick="closeModal('modal-confirm')">ยกเลิก</button>
-                <button id="btn-confirm-yes" style="flex:1; padding:10px; border-radius:10px; border:none; background:var(--trash-color); color:white;">ยืนยัน</button>
+                <button onclick="closeModal('modal-confirm')" style="flex:1; padding:10px; border:none; background:#f1f5f9; border-radius:8px;">ยกเลิก</button>
+                <button id="btn-confirm-yes" style="flex:1; padding:10px; border:none; background:#ef4444; color:white; border-radius:8px;">ยืนยัน</button>
             </div>
         </div>
     </div>
@@ -179,17 +190,15 @@
     <div class="inventory-drawer" id="drawer">
         <div class="drawer-header" onclick="toggleDrawer()">
             <div class="drawer-handle"></div>
-            <span style="font-size:0.8rem; color:#94a3b8; font-weight:bold;">📦 แตะเพื่อเปิดกล่องเพื่อน (<span id="count">0</span>)</span>
+            <span style="font-size:0.8rem; color:#94a3b8; font-weight:bold; margin-top:5px;">📦 แตะเพื่อเปิด (มีระบบแตะเพื่อย้าย)</span>
         </div>
         <div class="drawer-content" id="pool"></div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
         import { getDatabase, ref, push, onChildAdded, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Firebase Config จากที่คุณให้มา
         const firebaseConfig = {
             apiKey: "AIzaSyDihX2x7-HzugJSFEHraZGsOUrLXiB2ChU",
             authDomain: "shop-25ffb.firebaseapp.com",
@@ -201,45 +210,40 @@
             measurementId: "G-F21MPV5Z67"
         };
 
-        // Initialize
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const db = getDatabase(app);
-        const logsRef = ref(db, 'tier_activity_logs'); // เก็บข้อมูลใน path นี้
+        const logsRef = ref(db, 'tier_activity_logs');
 
-        // ฟังก์ชันส่ง Log ขึ้น Firebase (Global Scope)
-        window.logAction = (action) => {
-            push(logsRef, {
-                action: action,
-                timestamp: serverTimestamp(),
-                device: /Mobi|Android/i.test(navigator.userAgent) ? "Mobile" : "PC"
-            });
+        window.logAction = (action, type = 'info') => {
+            push(logsRef, { action, type, timestamp: serverTimestamp(), device: /Mobi|Android/i.test(navigator.userAgent) ? "Mobile" : "PC" });
         };
 
-        // ฟังก์ชันฟังข้อมูล Real-time สำหรับแอดมิน
-        let isListening = false;
         window.startAdminListener = () => {
-            if(isListening) return;
-            isListening = true;
-            const logContainer = document.getElementById('admin-logs');
-            logContainer.innerHTML = ''; // Clear old mocks
-
-            // เมื่อมีข้อมูลใหม่เข้ามาใน Firebase
+            const feed = document.getElementById('admin-feed');
+            feed.innerHTML = ''; 
             onChildAdded(logsRef, (snapshot) => {
                 const data = snapshot.val();
-                const date = data.timestamp ? new Date(data.timestamp).toLocaleTimeString('th-TH') : 'Just now';
+                const date = data.timestamp ? new Date(data.timestamp).toLocaleTimeString('th-TH') : '';
                 
-                const div = document.createElement('div');
-                div.className = 'log-item';
-                div.innerHTML = `
-                    <div>
-                        <div class="log-action">${data.action}</div>
-                        <div style="font-size:0.75rem; color:#64748b;">Device: ${data.device || 'Unknown'}</div>
+                // Icon Logic
+                let icon = '📝';
+                if(data.action.includes('ย้าย')) icon = '🖼️';
+                if(data.action.includes('สุ่ม')) icon = '🎲';
+                if(data.action.includes('ลบ')) icon = '🗑️';
+                if(data.action.includes('รีเซ็ต')) icon = '🔄';
+                if(data.action.includes('บันทึก')) icon = '📸';
+
+                const card = document.createElement('div');
+                card.className = 'log-card';
+                card.innerHTML = `
+                    <div class="log-icon">${icon}</div>
+                    <div class="log-content">
+                        <div class="log-title">${data.action}</div>
+                        <div class="log-desc">Device: ${data.device}</div>
                     </div>
-                    <div class="log-meta">${date}</div>
+                    <div class="log-time">${date}</div>
                 `;
-                // แทรกบนสุด
-                logContainer.insertBefore(div, logContainer.firstChild);
+                feed.insertBefore(card, feed.firstChild);
             });
         };
     </script>
@@ -248,9 +252,28 @@
         MobileDragDrop.polyfill({ dragImageCenterOnTouch: true, holdToDrag: 100 });
 
         const config = { total: 28, maleMax: 12 };
-        const eggs = { "card-6": "รุ่นใหญ่", "card-3": "เอกชัย", "card-8": "จารโป๊ะ", "card-21": "ข้าวมันไก่", "card-22": "จารบิ๊ก", "card-26": "หมางอย", "card-28": "สพต" };
-        let questions = ["จัดอันดับคนปากเหม็น", "จัดอันดับคนฟันเหลือง", "จัดอันดับคนเรียนเก่ง", "จัดอันดับคนเท้าเหม็น", "จัดอันดับคนตดเหม็น"];
+        let questions = ["จัดอันดับคนปากเหม็น", "จัดอันดับคนเรียนเก่ง", "จัดอันดับคนฮา"];
+        
+        // --- Secret Trigger Logic (R-R-L) ---
+        let taps = [];
+        let tapTimer;
+        
+        window.registerTap = (side) => {
+            taps.push(side);
+            clearTimeout(tapTimer);
+            tapTimer = setTimeout(() => { taps = []; }, 2000); // รีเซ็ตถ้ากดช้าเกิน 2 วิ
 
+            // Check Pattern: R -> R -> L
+            if (taps.length >= 3) {
+                const last3 = taps.slice(-3).join('');
+                if (last3 === 'RRL') {
+                    document.getElementById('modal-admin-auth').classList.add('active');
+                    taps = [];
+                }
+            }
+        };
+
+        // --- Core Logic ---
         window.onload = () => {
             const pool = document.getElementById('pool');
             for(let i=1; i<=config.total; i++) {
@@ -260,38 +283,33 @@
                 div.draggable = true;
                 div.style.backgroundImage = `url('${i}.jpg')`;
                 
-                // Drag Logic
+                // Mobile Drag Fix
                 div.addEventListener('dragstart', (e) => {
                     e.dataTransfer.setData("text", e.target.id);
-                    // Mobile Drawer Close (แก้บัค: ปิดทันทีเมื่อลาก)
-                    if(window.innerWidth < 1024 && div.parentElement.id === 'pool') {
-                        closeDrawer();
-                    }
+                    if(window.innerWidth < 1024 && div.parentElement.id === 'pool') closeDrawer();
                 });
 
-                // Tap Logic (Backup)
+                // Mobile Tap-to-Move (Backup)
                 div.onclick = () => {
+                    // Highlight selected card
+                    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+                    div.classList.add('selected');
+                    setTimeout(()=>div.classList.remove('selected'), 300);
+
+                    // Move Logic
                     if(div.parentElement.id === 'pool') {
-                        const target = document.querySelector('.tier-content');
-                        if(target) { target.appendChild(div); animateCard(div); updateCount(); logAction(`แตะย้ายเบอร์ ${i} -> ตาราง`); }
+                        document.querySelector('.tier-content').appendChild(div);
+                        if(window.logAction) logAction(`ย้ายเบอร์ ${i} ไปตาราง`);
                     } else {
                         document.getElementById('pool').appendChild(div);
-                        updateCount(); logAction(`แตะย้ายเบอร์ ${i} -> กล่อง`);
+                        if(window.logAction) logAction(`ย้ายเบอร์ ${i} กลับกล่อง`);
                     }
+                    updateCount();
                 };
                 pool.appendChild(div);
             }
             bindDropZones();
         };
-
-        // --- Core Functions ---
-        function animateCard(card) {
-            card.classList.remove('dookdik'); void card.offsetWidth; card.classList.add('dookdik');
-            if(eggs[card.id]) {
-                const rect = card.getBoundingClientRect();
-                spawnText(rect.left + 20, rect.top, eggs[card.id]);
-            }
-        }
 
         function bindDropZones() {
             document.querySelectorAll('.tier-content, #pool, #trash-bin').forEach(zone => {
@@ -301,39 +319,50 @@
                     const id = e.dataTransfer.getData("text");
                     const card = document.getElementById(id);
                     if(!card) return;
-
                     if(zone.id === 'trash-bin') { 
-                        card.style.transform = "scale(0) rotate(360deg)"; 
+                        card.style.transform = "scale(0)"; 
                         setTimeout(() => card.remove(), 400); 
-                        if(window.logAction) logAction(`ลบเบอร์ ${id.split('-')[1]}`);
+                        if(window.logAction) logAction(`ลบรูปเบอร์ ${id.split('-')[1]}`);
                     } else { 
-                        zone.appendChild(card); animateCard(card);
-                        if(window.logAction) logAction(`ลากเบอร์ ${id.split('-')[1]} -> ตาราง`);
+                        zone.appendChild(card);
+                        if(window.logAction) logAction(`ลากรูปเบอร์ ${id.split('-')[1]}`);
                     }
                     updateCount();
                 };
             });
         }
 
-        // --- Admin & Modals ---
-        function openAdminAuth() { document.getElementById('modal-admin-auth').classList.add('active'); document.getElementById('inp-pin').value = ''; }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        
+        // Admin Functions
         function checkPin() {
             if(document.getElementById('inp-pin').value === '0909') {
                 closeModal('modal-admin-auth');
                 document.getElementById('admin-panel').classList.add('active');
-                if(window.startAdminListener) window.startAdminListener(); // เริ่มฟัง Firebase
-            } else {
-                alert('รหัสผิด!');
-            }
+                if(window.startAdminListener) window.startAdminListener();
+            } else { alert('รหัสผิด!'); }
         }
         function closeAdminPanel() { document.getElementById('admin-panel').classList.remove('active'); }
 
-        // --- Helpers ---
-        function spawnText(x, y, text) { const s = document.createElement('span'); s.className = 'float-text'; s.innerText = text; s.style.left = x+'px'; s.style.top = y+'px'; document.body.appendChild(s); setTimeout(()=>s.remove(),2500); }
-        function spin() { 
-            let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15){ clearInterval(t); if(window.logAction) logAction("สุ่มคำถาม"); } },60); 
+        // General UI
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function openInputModal() { document.getElementById('modal-input').classList.add('active'); }
+        function openConfirmModal(t, d, cb) { 
+            document.getElementById('confirm-title').innerText = t; document.getElementById('confirm-desc').innerText = d; 
+            document.getElementById('btn-confirm-yes').onclick = () => { cb(); closeModal('modal-confirm'); };
+            document.getElementById('modal-confirm').classList.add('active'); 
+        }
+        function confirmAddQ() { closeModal('modal-input'); }
+        function handleReset() { openConfirmModal("ล้าง?", "กลับกล่องหมด", () => { 
+            document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c));
+            if(window.logAction) logAction("รีเซ็ตกระดาน");
+        }); }
+        function handleRemoveTier(btn) { openConfirmModal("ลบแถว?", "กลับกล่อง", () => { 
+            btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c));
+            btn.parentElement.remove();
+        }); }
+        function addNewTier() { 
+            const d = document.createElement('div'); d.className = 'tier-row'; 
+            d.innerHTML = `<div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank new" contenteditable="true">ใหม่</div><div class="tier-content"></div>`; 
+            document.getElementById('tier-stack').appendChild(d); bindDropZones(); 
         }
         function saveImg() { 
             const btnAdd = document.querySelector('.add-tier-btn'); const btnsDel = document.querySelectorAll('.tier-del-btn');
@@ -341,21 +370,12 @@
             html2canvas(document.getElementById('capture-zone'),{backgroundColor:'#64748b',useCORS:true,scale:2}).then(c=>{ 
                 const a=document.createElement('a'); a.download='tier.png'; a.href=c.toDataURL(); a.click(); 
                 btnAdd.style.display = 'flex'; btnsDel.forEach(b => b.style.display = '');
-                if(window.logAction) logAction("บันทึกรูปภาพ");
+                if(window.logAction) logAction("บันทึกภาพ");
             }); 
         }
-        
-        // --- UI Control ---
-        function openInputModal() { document.getElementById('modal-input').classList.add('active'); }
-        function openConfirmModal(title, desc, onConfirm) {
-            document.getElementById('confirm-title').innerText = title; document.getElementById('confirm-desc').innerText = desc;
-            const btn = document.getElementById('btn-confirm-yes'); btn.onclick = () => { onConfirm(); closeModal('modal-confirm'); };
-            document.getElementById('modal-confirm').classList.add('active');
+        function spin() { 
+            let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15){ clearInterval(t); if(window.logAction) logAction("สุ่มคำถาม"); } },60); 
         }
-        function confirmAddQ() { closeModal('modal-input'); }
-        function handleReset() { openConfirmModal("ล้าง?", "...", () => { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); if(window.logAction) logAction("รีเซ็ตกระดาน"); }); }
-        function handleRemoveTier(btn) { openConfirmModal("ลบแถว?", "...", () => { btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); btn.parentElement.remove(); }); }
-        function addNewTier() { const d = document.createElement('div'); d.className = 'tier-row'; d.innerHTML = `<div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank new" contenteditable="true">ใหม่</div><div class="tier-content"></div>`; document.getElementById('tier-stack').appendChild(d); bindDropZones(); }
         function toggleDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.toggle('open'); }
         function closeDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.remove('open'); }
         function updateCount() { document.getElementById('count').innerText = document.getElementById('pool').children.length; }
