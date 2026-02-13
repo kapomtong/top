@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tier List -6/1</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #64748b;
+            --bg-card: #f8fafc;
+            --text-main: #334155;
+            --accent: #3b82f6;
+            --trash-color: #ef4444;
+            --drawer-width: 400px; /* ตัวแปรความกว้างกระเป๋าในคอม */
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; outline: none; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; /* มือถือ: เรียงลงมา */
+            overflow-x: hidden;
+        }
+
+        /* --- Modals --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            z-index: 3000; display: none; justify-content: center; align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: white; width: 85%; max-width: 320px;
+            border-radius: 24px; padding: 20px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: popIn 0.2s;
+        }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; }
+        .modal-input {
+            width: 100%; padding: 12px; border: 2px solid #e2e8f0;
+            border-radius: 12px; margin-bottom: 15px; font-family: 'Kanit'; font-size: 1rem; text-align: center;
+        }
+        .modal-btns { display: flex; gap: 10px; }
+        .btn-modal { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; }
+        .btn-cancel { background: #f1f5f9; color: #64748b; }
+        .btn-confirm { background: var(--accent); color: white; }
+        .btn-danger { background: var(--trash-color); color: white; }
+
+        /* --- Floating UI (Mobile Default) --- */
+        .btn-save-float {
+            position: fixed; top: 15px; right: 15px;
+            background: #10b981; color: white; border: none;
+            width: 50px; height: 50px; border-radius: 50%;
+            font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2000; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-save-float:hover { transform: scale(1.1); }
+        .btn-save-float:active { transform: scale(0.9); }
+
+        .trash-float {
+            position: fixed; bottom: 80px; right: 20px;
+            width: 60px; height: 60px;
+            background: var(--trash-color); color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 2000; transition: all 0.3s;
+            border: 3px solid white;
+        }
+        .trash-float.drag-over { transform: scale(1.2) rotate(10deg); background: #b91c1c; }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px 10px 120px 10px; /* เว้นที่ให้ลิ้นชักมือถือ */
+            transition: all 0.3s;
+        }
+
+        .capture-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; }
+        h1 { color: white; font-weight: 600; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); text-align: center; }
+
+        .control-panel {
+            background: var(--bg-card); border-radius: 20px; padding: 15px;
+            width: 100%; max-width: 500px; text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px;
+        }
+        #q-text { font-size: 1.2rem; font-weight: 600; color: var(--accent); min-height: 40px; margin-bottom: 10px; }
+        .btn-icon { font-family: 'Kanit'; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-sec { background: #f1f5f9; color: #64748b; }
+
+        /* --- Tier List --- */
+        .tier-container { width: 100%; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 15px; }
+        .tier-row { display: flex; background: #334155; border-radius: 12px; overflow: hidden; min-height: 90px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .tier-del-btn { position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: rgba(0,0,0,0.4); color: white; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+        .tier-rank { width: 80px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 600; color: rgba(255,255,255,0.8); border-right: 1px solid rgba(255,255,255,0.1); cursor: text; text-align: center; }
+        
+        .s { background: #f87171; } .a { background: #fb923c; } .b { background: #facc15; } .c { background: #4ade80; } .d { background: #60a5fa; } .new { background: #cbd5e1; color:#334155; }
+        .tier-content { flex-grow: 1; padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; }
+        .add-tier-btn { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.3); color: white; height: 45px; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; margin-top: 10px; width: 100%; }
+
+        /* --- Friend Card --- */
+        .card {
+            width: 65px; height: 65px; background-size: cover; background-position: center;
+            border-radius: 10px; cursor: grab; position: relative; background-color: #e2e8f0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: transform 0.2s; touch-action: none;
+        }
+        .card.male { border: 3px solid #7dd3fc; } .card.female { border: 3px solid #f9a8d4; }
+        .dookdik { animation: wiggle 0.4s ease-in-out; }
+        @keyframes wiggle { 0% { transform: rotate(0deg); } 25% { transform: rotate(-5deg) scale(1.1); } 75% { transform: rotate(5deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1); } }
+
+        /* Easter Egg */
+        .float-text { position: absolute; color: #fbbf24; font-weight: 800; font-size: 1.8rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.6); pointer-events: none; z-index: 9999; white-space: nowrap; animation: floatThenSpin 2.5s ease-in-out forwards; }
+        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -50px) scale(1.1) rotate(0deg); } 100% { opacity: 0; transform: translate(300px, -500px) scale(0.2) rotate(1080deg); } }
+
+        /* --- INVENTORY DRAWER (Mobile) --- */
+        .inventory-drawer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: white; border-radius: 25px 25px 0 0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 999;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(calc(100% - 60px));
+            display: flex; flex-direction: column; height: 50vh;
+        }
+        .inventory-drawer.open { transform: translateY(0); }
+        .drawer-header { height: 60px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #f8fafc; border-radius: 25px 25px 0 0; border-bottom: 1px solid #e2e8f0; }
+        .drawer-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; }
+        .drawer-content { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: white; }
+
+        /* --- DESKTOP LAYOUT (The Fix) --- */
+        @media (min-width: 1024px) {
+            body { 
+                flex-direction: row; /* จัดเรียงแนวนอน */
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+            
+            /* Main Content (ซ้าย) */
+            .main-wrapper { 
+                width: calc(100% - var(--drawer-width)); /* พื้นที่ที่เหลือจากกระเป๋า */
+                height: 100vh;
+                overflow-y: auto;
+                padding: 40px;
+                align-items: center;
+                margin-right: var(--drawer-width); /* เว้นที่ขวาให้กระเป๋า */
+            }
+
+            /* Inventory (ขวา - Side Panel) */
+            .inventory-drawer {
+                position: fixed; top: 0; right: 0; bottom: 0; left: auto; /* ยึดขวา */
+                width: var(--drawer-width); height: 100vh;
+                transform: none !important; border-radius: 0;
+                border-left: 1px solid #e2e8f0;
+                box-shadow: -5px 0 20px rgba(0,0,0,0.05);
+            }
+            .drawer-header { cursor: default; pointer-events: none; height: 70px; background: white; }
+            .drawer-handle { display: none; }
+            .drawer-header::after { content: "🗄️ คลังเพื่อน"; font-size: 1.2rem; font-weight: 700; color: #334155; }
+            
+            /* ปรับขนาดการ์ดในคอมให้ใหญ่ขึ้นนิดนึง */
+            .card { width: 75px; height: 75px; }
+
+            /* --- ย้ายปุ่ม Save และ ถังขยะ หนี Side Panel --- */
+            .btn-save-float {
+                right: calc(var(--drawer-width) + 30px); /* ขยับออกมาจากกระเป๋า */
+                top: 30px;
+            }
+            
+            .trash-float {
+                right: calc(var(--drawer-width) + 30px); /* ขยับออกมาจากกระเป๋า */
+                bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="modal-input" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-title">เพิ่มคำถามใหม่</div>
+            <input id="inp-q" class="modal-input" placeholder="พิมพ์คำถาม...">
+            <div class="modal-btns">
+                <button class="btn-modal btn-cancel" onclick="closeModal('modal-input')">ยกเลิก</button>
+                <button class="btn-modal btn-confirm" onclick="confirmAddQ()">เพิ่ม</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-title" id="confirm-title">ยืนยัน?</div>
+            <div class="modal-desc" id="confirm-desc">รายละเอียด</div>
+            <div class="modal-btns">
+                <button class="btn-modal btn-cancel" onclick="closeModal('modal-confirm')">ยกเลิก</button>
+                <button class="btn-modal btn-danger" id="btn-confirm-yes">ยืนยัน</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-save-float" onclick="saveImg()" title="บันทึกภาพ">📸</button>
+    <div id="trash-bin" class="trash-float">🗑️</div>
+
+    <div class="main-wrapper">
+        <div class="capture-wrapper" id="capture-zone">
+            <h1>จัดอันดับเพื่อนในห้อง</h1>
+
+            <div class="control-panel">
+                <div id="q-text">พร้อมไหม? กดสุ่มเลย!</div>
+                <div class="btn-group" data-html2canvas-ignore="true" style="display:flex; gap:15px; justify-content:center;">
+                    <button class="btn-icon btn-primary" onclick="spin()" title="สุ่ม">🎲</button>
+                    <button class="btn-icon btn-sec" onclick="openInputModal()" title="เพิ่ม">➕</button>
+                    <button class="btn-icon btn-sec" style="color:#ef4444;" onclick="handleReset()" title="รีเซ็ต">🔄</button>
+                </div>
+            </div>
+
+            <div class="tier-container" id="tier-stack">
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank s" contenteditable="true">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank a" contenteditable="true">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank b" contenteditable="true">โหด</div><div class="tier-content" id="tier-b"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank c" contenteditable="true">เฉยๆ</div><div class="tier-content" id="tier-c"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank d" contenteditable="true">พักก่อน</div><div class="tier-content" id="tier-d"></div></div>
+            </div>
+            <div class="add-tier-btn" onclick="addNewTier()" data-html2canvas-ignore="true">➕ เพิ่มแถว</div>
+        </div>
+    </div>
+
+    <div class="inventory-drawer" id="drawer">
+        <div class="drawer-header" onclick="toggleDrawer()">
+            <div class="drawer-handle"></div>
+            <span class="mobile-hint" style="font-size:0.8rem; color:#94a3b8; font-weight:bold;">📦 แตะเพื่อเปิดกล่องเพื่อน (<span id="count">0</span>)</span>
+        </div>
+        <div class="drawer-content" id="pool"></div>
+    </div>
+
+    <script>
+        MobileDragDrop.polyfill({ dragImageCenterOnTouch: true });
+
+        const config = { total: 28, maleMax: 12 };
+        const eggs = {
+            "card-6": "รุ่นใหญ่", "card-3": "เอกชัย", "card-8": "จารโป๊ะ",
+            "card-21": "ข้าวมันไก่น้องใบเฟิร์น", "card-22": "จารบิ๊ก",
+            "card-26": "หมางอยเข้าครัว", "card-28": "สพต"
+        };
+        let questions = [
+            "จัดอันดับคนที่ปากเหม็นที่สุด", "จัดอันดับคนที่ฟันเหลืองทองคำ", "จัดอันดับคนที่เรียนเก่งจนน่าหมั่นไส้", "จัดอันดับคนที่เท้าเหม็นระดับอาวุธ", "จัดอันดับคนที่ตดเหม็นเงียบแต่พิฆาต",
+            "จัดอันดับคนที่ขี้เกียจอาบน้ำที่สุด", "จัดอันดับคนที่หัวเน่าไม่สระผม", "จัดอันดับคนที่ชอบแคะขี้มูกป้ายโต๊ะ", "จัดอันดับคนที่ตัวเหม็นเปรี้ยวตลอดเวลา", "จัดอันดับคนที่ผมมันแผล็บทอดไข่ได้",
+            "จัดอันดับคนที่ฉลาดแต่ทำตัวแปลก", "จัดอันดับคนที่สอบผ่านแบบงงๆ", "จัดอันดับคนที่ซุ่มเรียนแต่บอกไม่รู้เรื่อง", "จัดอันดับคนที่หน้ามึนเวลาโดนถาม", "จัดอันดับคนที่อ่านหนังสือจนสติหลุด",
+            "จัดอันดับคนที่ขี้งกที่สุดในกลุ่ม", "จัดอันดับคนที่ชอบยืมเงินแล้วไม่คืน", "จัดอันดับคนที่เนียนกินขนมเพื่อน", "จัดอันดับคนที่กินแรงเพื่อนงานกลุ่ม", "จัดอันดับคนที่ทำตัวมีพิรุธตลอดเวลา",
+            "จัดอันดับคนที่แอบหลับเนียนที่สุด", "จัดอันดับคนที่มาสายเป็นอาชีพ", "จัดอันดับคนที่ชอบดองไลน์ข้ามปี", "จัดอันดับคนที่บ่นเก่งเหมือนมีแม่สิง", "จัดอันดับคนที่นกเก่งจนน่าสงสาร",
+            "จัดอันดับคนที่สายมโนตัวแม่", "จัดอันดับคนที่หลงตัวเองที่สุด", "จัดอันดับคนที่ตลกฝืดสนิท", "จัดอันดับคนที่โดนแกงบ่อยที่สุด", "จัดอันดับคนที่หน้าแก่เกินอายุ",
+            "จัดอันดับคนที่หน้าเด็กแต่ใจป้า", "จัดอันดับคนที่สมองปลาทองขี้ลืมสุด", "จัดอันดับคนที่ขี้งอนไร้สาระ", "จัดอันดับคนที่บ้ากล้องที่สุด", "จัดอันดับคนที่สายมูตัวพ่อ",
+            "จัดอันดับคนที่กวนประสาทเบอร์หนึ่ง", "จัดอันดับคนที่หน้านิ่งตึงตลอดวัน", "จัดอันดับคนที่แต่งตัวประหลาดที่สุด", "จัดอันดับคนที่ขี้ตกใจเกินเหตุ", "จัดอันดับคนที่มนุษย์กลางคืนไม่นอน",
+            "จัดอันดับคนที่ชอบทวงบุญคุณ", "จัดอันดับคนที่เจ้าแม่ดราม่าประจำห้อง", "จัดอันดับคนที่ขิงเก่งที่สุด", "จัดอันดับคนที่เถียงคำไม่ตกฟาก", "จัดอันดับคนที่รวยเงียบแต่ขี้งก",
+            "จัดอันดับคนที่ลูกรักอาจารย์ที่สุด", "จัดอันดับคนที่ซื่อบื้อที่สุด", "จัดอันดับคนที่มั่นใจแบบผิดๆ", "จัดอันดับคนที่ชอบสปอยล์หนัง", "จัดอันดับคนที่ติดมือถือที่สุด",
+            "จัดอันดับคนที่ติ่งจนเสียสติ", "จัดอันดับคนที่เต้นพริ้วเกินเบอร์", "จัดอันดับคนที่ร้องเพลงเพี้ยนที่สุด", "จัดอันดับคนที่เก่งคอมแบบแฮกเกอร์", "จัดอันดับคนที่ลายมือไก่เขี่ยสุด",
+            "จัดอันดับคนที่กินจุจนร้านเจ๊ง", "จัดอันดับคนที่ชอบอวดรวย (ปลอม)", "จัดอันดับคนที่น่าจะไม่มีใครเอา", "จัดอันดับคนที่ดองงานจนไฟลนก้น", "จัดอันดับคนที่พูดภาษาต่างดาว",
+            "จัดอันดับคนที่แคปชั่นเสี่ยวที่สุด", "จัดอันดับคนที่แอบมีแฟนเงียบๆ", "จัดอันดับคนที่น่าจะโดนจับคนแรก", "จัดอันดับคนที่ชอบแกล้งเพื่อนแรงๆ", "จัดอันดับคนที่ทำของหายทุกวัน",
+            "จัดอันดับคนที่ความสดใสแบบปลอมๆ", "จัดอันดับคนที่ใจเย็นจนน่าถีบ", "จัดอันดับคนที่กล้าหาญผิดที่", "จัดอันดับคนที่วางแผนเก่งแต่ล่มตลอด", "จัดอันดับคนที่พูดมากจนลิงหลับ",
+            "จัดอันดับคนที่น่าจะเป็นเจ้าพ่อมีม", "จัดอันดับคนที่สร้างคอนเทนต์เกร็งๆ", "จัดอันดับคนที่ลึกลับน่าสงสัย", "จัดอันดับคนที่ขี้กลัวเกินเหตุ", "จัดอันดับคนที่น่าจะเป็นประธานบริษัท"
+        ];
+
+        window.onload = () => {
+            const pool = document.getElementById('pool');
+            for(let i=1; i<=config.total; i++) {
+                let gender = (i <= config.maleMax) ? 'male' : 'female';
+                let div = document.createElement('div');
+                div.className = `card ${gender}`;
+                div.id = `card-${i}`;
+                div.draggable = true;
+                div.style.backgroundImage = `url('${i}.jpg')`;
+                div.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData("text", e.target.id);
+                    if(window.innerWidth < 1024) { // ปิดลิ้นชักเฉพาะในมือถือ
+                        if(div.parentElement.id === 'pool') closeDrawer();
+                    }
+                });
+                pool.appendChild(div);
+            }
+            updateCount();
+            bindDropZones();
+        };
+
+        function openInputModal() { document.getElementById('modal-input').classList.add('active'); }
+        function openConfirmModal(title, desc, onConfirm) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-desc').innerText = desc;
+            const btn = document.getElementById('btn-confirm-yes');
+            btn.onclick = () => { onConfirm(); closeModal('modal-confirm'); };
+            document.getElementById('modal-confirm').classList.add('active');
+        }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function confirmAddQ() {
+            const v = document.getElementById('inp-q').value;
+            if(v) { questions.push(v); document.getElementById('q-text').innerText = v; }
+            closeModal('modal-input'); document.getElementById('inp-q').value = '';
+        }
+
+        function handleReset() {
+            openConfirmModal("ล้างกระดาน?", "เพื่อนทุกคนจะถูกย้ายกลับไปที่กล่องเก็บของ", () => {
+                const pool = document.getElementById('pool');
+                document.querySelectorAll('.card').forEach(c => pool.appendChild(c));
+                updateCount();
+            });
+        }
+
+        function handleRemoveTier(btn) {
+            openConfirmModal("ลบแถวนี้?", "รูปในแถวจะกลับเข้ากล่อง", () => {
+                const row = btn.parentElement;
+                const cards = row.querySelectorAll('.card');
+                const pool = document.getElementById('pool');
+                cards.forEach(c => pool.appendChild(c));
+                row.remove();
+                updateCount();
+            });
+        }
+
+        function addNewTier() {
+            const stack = document.getElementById('tier-stack');
+            const newRow = document.createElement('div');
+            newRow.className = 'tier-row';
+            newRow.innerHTML = `<div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank new" contenteditable="true">ใหม่</div><div class="tier-content"></div>`;
+            stack.appendChild(newRow);
+            bindDropZones();
+        }
+
+        const trashBin = document.getElementById('trash-bin');
+
+        function bindDropZones() {
+            const zones = document.querySelectorAll('.tier-content, #pool, #trash-bin');
+            zones.forEach(zone => {
+                zone.ondragover = e => {
+                    e.preventDefault();
+                    if(zone.id === 'trash-bin') zone.classList.add('drag-over');
+                };
+                zone.ondragleave = e => {
+                    if(zone.id === 'trash-bin') zone.classList.remove('drag-over');
+                };
+                zone.ondrop = e => {
+                    e.preventDefault();
+                    if(zone.id === 'trash-bin') zone.classList.remove('drag-over');
+
+                    const id = e.dataTransfer.getData("text");
+                    const card = document.getElementById(id);
+                    if(!card) return;
+
+                    if(zone.id === 'trash-bin') {
+                        card.style.transition = "all 0.4s";
+                        card.style.transform = "scale(0) rotate(360deg)";
+                        setTimeout(() => card.remove(), 400);
+                    } else {
+                        zone.appendChild(card);
+                        card.classList.remove('dookdik');
+                        void card.offsetWidth; 
+                        card.classList.add('dookdik');
+                        if(eggs[id]) spawnText(e.clientX || e.pageX, e.clientY || e.pageY, eggs[id]);
+                    }
+                    updateCount();
+                };
+            });
+        }
+
+        function spawnText(x, y, text) {
+            const span = document.createElement('span');
+            span.className = 'float-text';
+            span.innerText = text;
+            span.style.left = (x - 30) + 'px';
+            span.style.top = (y - 50) + 'px';
+            document.body.appendChild(span);
+            setTimeout(() => span.remove(), 2500);
+        }
+
+        function spin() {
+            const txt = document.getElementById('q-text');
+            let count = 0;
+            const timer = setInterval(() => {
+                txt.innerText = questions[Math.floor(Math.random() * questions.length)];
+                count++;
+                if(count > 15) clearInterval(timer);
+            }, 60);
+        }
+
+        function saveImg() {
+            const btnAdd = document.querySelector('.add-tier-btn');
+            const btnsDel = document.querySelectorAll('.tier-del-btn');
+            if(btnAdd) btnAdd.style.display = 'none';
+            btnsDel.forEach(b => b.style.display = 'none');
+
+            const zone = document.getElementById('capture-zone');
+            html2canvas(zone, { 
+                backgroundColor: '#64748b',
+                useCORS: true,
+                allowTaint: true,
+                scale: 2 
+            }).then(c => {
+                const a = document.createElement('a');
+                a.download = 'tier-list.png';
+                a.href = c.toDataURL();
+                a.click();
+                if(btnAdd) btnAdd.style.display = 'flex';
+                btnsDel.forEach(b => b.style.display = '');
+            }).catch(err => {
+                openConfirmModal("บันทึกไม่ได้", "กรุณาเปิดไฟล์ผ่าน Local Server หรืออัปโหลดขึ้นเว็บ", () => {});
+                if(btnAdd) btnAdd.style.display = 'flex';
+                btnsDel.forEach(b => b.style.display = '');
+            });
+        }
+
+        // Drawer Control (เฉพาะ Mobile)
+        function toggleDrawer() { 
+            if(window.innerWidth < 1024) {
+                document.getElementById('drawer').classList.toggle('open'); 
+            }
+        }
+        function closeDrawer() { 
+            if(window.innerWidth < 1024) {
+                document.getElementById('drawer').classList.remove('open'); 
+            }
+        }
+        function updateCount() { document.getElementById('count').innerText = document.getElementById('pool').children.length; }
+
+    </script>
+</body>
+</html>
