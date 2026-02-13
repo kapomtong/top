@@ -3,116 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tier List - Live Mirror</title>
+    <title>Tier List - Pro Admin & Mobile Fixed</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
 
     <style>
         :root {
-            --bg-body: #64748b; --bg-card: #f8fafc; --text-main: #334155;
-            --accent: #3b82f6; --trash-color: #ef4444; --drawer-width: 400px;
+            --bg-body: #1e293b; /* ปรับพื้นหลังให้ดูพรีเมียมขึ้น */
+            --bg-card: #ffffff;
+            --text-main: #334155;
+            --accent: #3b82f6;
+            --trash-color: #ef4444;
+            --drawer-width: 350px;
         }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; outline: none; }
-        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Kanit', sans-serif; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* --- Admin Live Monitor UI --- */
-        #admin-panel {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f172a; color: #e2e8f0; z-index: 10000;
-            display: none; flex-direction: column;
-        }
-        #admin-panel.active { display: flex; }
-        
-        .admin-sidebar {
-            width: 100%; height: 150px; background: #1e293b; padding: 10px; overflow-x: auto;
-            display: flex; gap: 10px; border-bottom: 2px solid #334155; white-space: nowrap;
-        }
-        .user-card {
-            min-width: 100px; height: 100%; background: #334155; border-radius: 8px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.2s; border: 2px solid transparent;
-        }
-        .user-card.active { border-color: #10b981; background: #064e3b; }
-        .user-card span { font-size: 2rem; }
-        .user-id { font-size: 0.8rem; margin-top: 5px; color: #cbd5e1; }
-
-        .admin-screen-view {
-            flex-grow: 1; background: #0f172a; padding: 20px; overflow-y: auto;
-            display: flex; justify-content: center;
-        }
-        /* จำลองหน้าจอ User ใน Admin */
-        .mirror-container {
-            width: 100%; max-width: 400px; background: #64748b; padding: 10px; border-radius: 15px;
-            border: 4px solid #334155; opacity: 0.5; transition: opacity 0.3s;
-        }
-        .mirror-container.live { opacity: 1; border-color: #10b981; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; outline: none; margin: 0; padding: 0; }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Kanit', sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
         /* --- Secret Triggers --- */
         .secret-trigger { position: fixed; top: 0; width: 80px; height: 80px; z-index: 9999; }
         #trigger-left { left: 0; } #trigger-right { right: 0; }
 
-        /* --- Main UI --- */
-        .main-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 10px 140px 10px; }
+        /* --- 🌟 PRO ADMIN PANEL (Glassmorphism) --- */
+        #admin-panel {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0; z-index: 10000; display: none; flex-direction: column; padding: 20px;
+            overflow-y: auto;
+        }
+        #admin-panel.active { display: flex; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .admin-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 15px;
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;
+        }
+        .admin-header h2 { font-size: 1.5rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        
+        .admin-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;
+        }
+        /* Admin Card Style */
+        .admin-card {
+            background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px;
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s;
+        }
+        .admin-card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        .ac-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 10px; }
+        .ac-uid { font-weight: 700; color: #f8fafc; font-size: 1.1rem; }
+        .ac-time { font-size: 0.8rem; color: #94a3b8; }
+        .ac-topic { font-size: 1rem; color: #fbbf24; font-weight: 600; margin-bottom: 15px; background: rgba(251,191,36,0.1); padding: 8px; border-radius: 8px; text-align: center; }
+        .ac-stat-row { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px; color: #cbd5e1; }
+        .ac-stat-val { font-weight: 700; background: rgba(255,255,255,0.1); padding: 2px 10px; border-radius: 20px; }
+
+        /* --- Modals --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 11000; display: none; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: white; width: 90%; max-width: 320px; border-radius: 20px; padding: 25px; text-align: center; animation: popIn 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; margin: 15px 0; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; }
+        .btn-modal { padding: 10px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; flex: 1; font-family: 'Kanit'; font-size: 1rem; }
+
+        /* --- Floating UI --- */
+        .btn-save-float { position: fixed; top: 15px; right: 15px; width: 55px; height: 55px; border-radius: 50%; background: #10b981; color: white; border: none; font-size: 1.6rem; z-index: 2000; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+        .trash-float { position: fixed; bottom: 80px; right: 15px; width: 65px; height: 65px; border-radius: 50%; background: #ef4444; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; z-index: 2000; border: 3px solid white; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); transition: 0.2s; }
+        .trash-float.drag-over { transform: scale(1.2) rotate(15deg); background: #b91c1c; }
+
+        /* --- Main App UI --- */
+        .main-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 10px 100px 10px; }
         .capture-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; }
         
-        .tier-container { width: 100%; display: flex; flex-direction: column; gap: 5px; padding: 5px; background: rgba(0,0,0,0.2); border-radius: 10px; }
-        .tier-row { display: flex; background: #334155; border-radius: 8px; overflow: hidden; min-height: 80px; border: 1px solid rgba(255,255,255,0.1); }
-        .tier-rank { width: 60px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: bold; color: rgba(255,255,255,0.8); border-right: 1px solid rgba(255,255,255,0.1); }
-        .s { background: #f87171; } .a { background: #fb923c; } .b { background: #facc15; } .c { background: #4ade80; } .d { background: #60a5fa; } .new { background: #cbd5e1; color:#334155; }
-        .tier-content { flex-grow: 1; padding: 5px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start; min-height: 80px; }
+        h1 { color: white; font-weight: 700; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); font-size: 1.8rem; text-align: center; }
 
-        /* --- Friend Card (Fix Mobile) --- */
+        .control-panel { background: white; border-radius: 20px; padding: 15px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        #q-text { font-size: 1.2rem; font-weight: 700; color: var(--accent); min-height: 40px; margin-bottom: 10px; }
+        .btn-icon { width: 45px; height: 45px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        /* --- Tier List UI (ปรับให้ดูสบายตา ไม่แน่น) --- */
+        .tier-container { width: 100%; display: flex; flex-direction: column; gap: 8px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 16px; backdrop-filter: blur(5px); }
+        .tier-row { display: flex; background: #334155; border-radius: 12px; overflow: hidden; min-height: 85px; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+        .tier-del-btn { position: absolute; left: 5px; top: 5px; width: 22px; height: 22px; background: rgba(0,0,0,0.5); color: white; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+        .tier-rank { width: 70px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: rgba(0,0,0,0.7); text-shadow: 1px 1px 0 rgba(255,255,255,0.3); }
+        .tier-content { flex-grow: 1; padding: 8px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; min-height: 85px; }
+        
+        .s { background: #fca5a5; } .a { background: #fdba74; } .b { background: #fde047; } .c { background: #86efac; } .d { background: #93c5fd; } .new { background: #e2e8f0; }
+
+        /* --- Friend Card (Fix Mobile Drag) --- */
         .card {
             width: 55px; height: 55px; background-size: cover; background-position: center;
-            border-radius: 8px; cursor: grab; background-color: #e2e8f0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3); flex-shrink: 0;
-            /* แก้ไขปัญหามือถือลากไม่ได้ 100% */
-            touch-action: none; 
-            -webkit-user-select: none;
-            user-select: none;
+            border-radius: 12px; cursor: grab; background-color: #cbd5e1;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2); flex-shrink: 0;
+            
+            /* The Ultimate Fix สำหรับลากบนมือถือ */
+            touch-action: none !important; 
+            -webkit-user-drag: element;
         }
-        /* โหมดเลือก (Tap Mode) */
-        .card.selected { 
-            border: 3px solid #fbbf24 !important; 
-            box-shadow: 0 0 15px #fbbf24; 
-            transform: scale(1.15); 
-            z-index: 100; 
-        }
+        .card.male { border: 2px solid #38bdf8; } .card.female { border: 2px solid #f472b6; }
         
-        .card.male { border: 2px solid #7dd3fc; } .card.female { border: 2px solid #f9a8d4; }
+        /* Easter Egg */
+        .float-text { position: absolute; color: #fbbf24; font-weight: 800; font-size: 1.6rem; text-shadow: 2px 2px 0 #000; pointer-events: none; z-index: 9999; white-space: nowrap; animation: floatThenSpin 2.5s ease-in-out forwards; }
+        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -50px) scale(1.1) rotate(0deg); } 100% { opacity: 0; transform: translate(250px, -400px) scale(0.2) rotate(1080deg); } }
 
-        /* Inventory Drawer */
+        /* --- Inventory Drawer (ปรับให้เตี้ยลง ไม่บังจอตอนลาก) --- */
         .inventory-drawer { 
             position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: white; border-radius: 20px 20px 0 0; 
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 990; 
-            transition: transform 0.3s; transform: translateY(calc(100% - 50px)); 
-            display: flex; flex-direction: column; height: 45vh; 
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            border-radius: 25px 25px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.2); 
+            z-index: 990; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            transform: translateY(calc(100% - 50px)); 
+            display: flex; flex-direction: column; 
+            height: 35vh; /* ปรับให้เตี้ยลง เหลือพื้นที่ข้างบนให้วางรูปสบายๆ */
+            min-height: 250px;
         }
         .inventory-drawer.open { transform: translateY(0); }
-        .drawer-header { height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #f8fafc; border-radius: 20px 20px 0 0; border-bottom: 1px solid #e2e8f0; }
-        .drawer-content { flex-grow: 1; overflow-y: auto; padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; background: white; }
+        .drawer-header { height: 50px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; border-bottom: 1px solid #e2e8f0; }
+        .drawer-handle { width: 50px; height: 6px; background: #94a3b8; border-radius: 10px; margin-right: 10px; }
+        .drawer-content { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 
-        /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 11000; display: none; justify-content: center; align-items: center; }
-        .modal-overlay.active { display: flex; }
-        .modal-box { background: white; width: 300px; border-radius: 20px; padding: 20px; text-align: center; }
-        .modal-input { width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 10px; margin-bottom: 10px; text-align: center; font-size: 1.2rem; }
-
-        /* Buttons */
-        .btn-save-float { position: fixed; top: 15px; right: 15px; width: 50px; height: 50px; border-radius: 50%; background: #10b981; color: white; border: none; font-size: 1.5rem; z-index: 2000; cursor: pointer; display: flex; align-items: center; justify-content: center;}
-        .trash-float { position: fixed; bottom: 60px; right: 15px; width: 60px; height: 60px; border-radius: 50%; background: #ef4444; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; z-index: 2000; border: 3px solid white; transition: 0.2s; }
-        .trash-float.drag-over { transform: scale(1.2); background: #b91c1c; }
-
-        /* Desktop Layout */
+        /* Desktop Mode */
         @media (min-width: 1024px) {
             body { flex-direction: row; }
-            .main-wrapper { width: calc(100% - 350px); padding: 40px; margin-right: 350px; height: 100vh; overflow-y: auto; }
-            .inventory-drawer { position: fixed; top: 0; right: 0; bottom: 0; left: auto; width: 350px; height: 100vh; transform: none !important; border-radius: 0; border-left: 1px solid #e2e8f0; }
-            .drawer-header { pointer-events: none; }
-            .btn-save-float { right: 380px; } .trash-float { right: 380px; }
+            .main-wrapper { width: calc(100% - var(--drawer-width)); padding: 40px; margin-right: var(--drawer-width); height: 100vh; overflow-y: auto; }
+            .inventory-drawer { position: fixed; top: 0; right: 0; bottom: 0; left: auto; width: var(--drawer-width); height: 100vh; transform: none !important; border-radius: 0; border-left: 1px solid #cbd5e1; }
+            .drawer-header { pointer-events: none; } .drawer-handle { display: none; }
+            .btn-save-float { right: calc(var(--drawer-width) + 20px); } .trash-float { right: calc(var(--drawer-width) + 20px); bottom: 30px; }
+            .card { width: 70px; height: 70px; }
         }
     </style>
 </head>
@@ -123,25 +144,46 @@
 
     <div id="admin-panel">
         <div class="admin-header">
-            <h3 style="margin:0; color:white;">🔴 ADMIN MONITOR <span id="online-count" style="font-size:0.8rem; background:#10b981; padding:2px 6px; border-radius:4px;">0 Online</span></h3>
-            <button onclick="closeAdminPanel()" style="background:#ef4444; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">ออก</button>
+            <h2><span style="font-size:2rem;">📡</span> ADMIN DASHBOARD</h2>
+            <div style="display:flex; gap:15px; align-items:center;">
+                <span id="online-count" style="background:#10b981; color:white; padding:5px 12px; border-radius:20px; font-weight:bold; font-size:0.9rem;">0 Online</span>
+                <button onclick="closeAdminPanel()" style="background:#ef4444; color:white; border:none; padding:8px 20px; border-radius:10px; cursor:pointer; font-weight:bold;">ปิดหน้าต่าง</button>
+            </div>
         </div>
-        <div class="admin-sidebar" id="user-list">
-            </div>
-        <div class="admin-screen-view">
-            <div id="mirror-screen" class="mirror-container">
-                <div style="text-align:center; color:white; margin-top:50px;">เลือกผู้ใช้ด้านบนเพื่อดูหน้าจอ</div>
-            </div>
+        <div class="admin-grid" id="user-grid">
+            <div style="color:#94a3b8; text-align:center; grid-column: 1 / -1; margin-top:50px;">รอการเชื่อมต่อจากผู้ใช้งาน...</div>
         </div>
     </div>
 
     <div id="modal-admin-auth" class="modal-overlay">
         <div class="modal-box">
-            <h3>🔐 รหัสลับ (0909)</h3>
-            <input id="inp-pin" type="tel" class="modal-input" placeholder="****" maxlength="4">
-            <div style="display:flex; gap:10px;">
-                <button onclick="closeModal('modal-admin-auth')" style="flex:1; padding:10px; border:none; background:#f1f5f9; border-radius:8px;">ยกเลิก</button>
-                <button onclick="checkPin()" style="flex:1; padding:10px; border:none; background:#3b82f6; color:white; border-radius:8px;">เข้าสู่ระบบ</button>
+            <h3 style="margin:0; color:#1e293b;">🔐 รหัสผู้ดูแลระบบ</h3>
+            <input id="inp-pin" type="tel" class="modal-input" placeholder="0 9 0 9" maxlength="4" style="letter-spacing: 8px; font-weight:bold;">
+            <div class="modal-btns">
+                <button class="btn-modal btn-cancel" onclick="closeModal('modal-admin-auth')">ยกเลิก</button>
+                <button class="btn-modal btn-confirm" onclick="checkPin()">เข้าสู่ระบบ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-input" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="margin:0 0 10px 0;">เพิ่มคำถามใหม่</h3>
+            <input id="inp-q" class="modal-input" placeholder="พิมพ์คำถามที่นี่...">
+            <div class="modal-btns">
+                <button class="btn-modal btn-cancel" onclick="closeModal('modal-input')">ยกเลิก</button>
+                <button class="btn-modal btn-confirm" onclick="confirmAddQ()">เพิ่ม</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="modal-overlay">
+        <div class="modal-box">
+            <h3 id="confirm-title" style="margin:0 0 10px 0;">ยืนยัน?</h3>
+            <p id="confirm-desc" style="color:#64748b; margin-bottom:20px;">...</p>
+            <div class="modal-btns">
+                <button class="btn-modal btn-cancel" onclick="closeModal('modal-confirm')">ยกเลิก</button>
+                <button id="btn-confirm-yes" class="btn-modal" style="background:#ef4444; color:white;">ยืนยัน</button>
             </div>
         </div>
     </div>
@@ -151,37 +193,38 @@
 
     <div class="main-wrapper">
         <div class="capture-wrapper" id="capture-zone">
-            <h1 style="color:white; margin-bottom:10px;">จัดอันดับเพื่อน 6/1</h1>
+            <h1>จัดอันดับเพื่อน 6/1</h1>
             
-            <div style="background:white; padding:10px; border-radius:15px; margin-bottom:15px; width:100%; text-align:center;">
-                <div id="q-text" style="font-size:1.2rem; color:#3b82f6; font-weight:bold;">กดสุ่มเลย!</div>
-                <div style="display:flex; justify-content:center; gap:10px; margin-top:5px;" data-html2canvas-ignore="true">
-                    <button onclick="spin()" style="background:#3b82f6; color:white; border:none; width:40px; height:40px; border-radius:50%; font-size:1.2rem;">🎲</button>
-                    <button onclick="handleReset()" style="background:#ef4444; color:white; border:none; width:40px; height:40px; border-radius:50%; font-size:1.2rem;">🔄</button>
+            <div class="control-panel">
+                <div id="q-text">สุ่มคำถามเลย!</div>
+                <div style="display:flex; justify-content:center; gap:15px;" data-html2canvas-ignore="true">
+                    <button class="btn-icon btn-primary" onclick="spin()">🎲</button>
+                    <button class="btn-icon btn-sec" onclick="openInputModal()">➕</button>
+                    <button class="btn-icon btn-sec" style="color:#ef4444;" onclick="handleReset()">🔄</button>
                 </div>
             </div>
 
             <div class="tier-container" id="tier-stack">
-                <div class="tier-row" id="row-s"><div class="tier-rank s">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
-                <div class="tier-row" id="row-a"><div class="tier-rank a">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
-                <div class="tier-row" id="row-b"><div class="tier-rank b">ผ่าน</div><div class="tier-content" id="tier-b"></div></div>
-                <div class="tier-row" id="row-c"><div class="tier-rank c">พอได้</div><div class="tier-content" id="tier-c"></div></div>
-                <div class="tier-row" id="row-d"><div class="tier-rank d">พักก่อน</div><div class="tier-content" id="tier-d"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank s" contenteditable="true">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank a" contenteditable="true">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank b" contenteditable="true">ผ่าน</div><div class="tier-content" id="tier-b"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank c" contenteditable="true">พอได้</div><div class="tier-content" id="tier-c"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank d" contenteditable="true">พักก่อน</div><div class="tier-content" id="tier-d"></div></div>
             </div>
         </div>
     </div>
 
     <div class="inventory-drawer" id="drawer">
         <div class="drawer-header" onclick="toggleDrawer()">
-            <div class="drawer-handle" style="width:40px; height:5px; background:#cbd5e1; border-radius:10px;"></div>
-            <span style="margin-left:10px; font-size:0.8rem; color:#94a3b8;">📦 แตะเพื่อเปิด (มีระบบจิ้มเพื่อย้าย)</span>
+            <div class="drawer-handle"></div>
+            <span style="font-size:0.85rem; color:#64748b; font-weight:bold;">📦 แตะเพื่อเปิดคลังเพื่อน (<span id="count">0</span>)</span>
         </div>
         <div class="drawer-content" id="pool"></div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDihX2x7-HzugJSFEHraZGsOUrLXiB2ChU",
@@ -197,19 +240,17 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         
-        // Generate Unique User ID
-        const userId = 'user_' + Math.random().toString(36).substr(2, 5);
-        const userRef = ref(db, 'sessions/' + userId);
+        const userId = 'User_' + Math.floor(Math.random() * 10000);
+        const userRef = ref(db, 'live_sessions/' + userId);
 
-        // Sync Function: ส่งสถานะหน้าจอขึ้น Firebase ทุกครั้งที่ขยับ
+        // Sync Function (ส่งคำถามที่สุ่มได้ ขึ้นไปด้วย!)
         window.syncScreen = () => {
             const state = {
-                s: getIds('tier-s'),
-                a: getIds('tier-a'),
-                b: getIds('tier-b'),
-                c: getIds('tier-c'),
-                d: getIds('tier-d'),
-                pool: getIds('pool'),
+                question: document.getElementById('q-text').innerText,
+                s: getIds('tier-s').length,
+                a: getIds('tier-a').length,
+                b: getIds('tier-b').length,
+                pool: getIds('pool').length,
                 lastUpdate: Date.now()
             };
             set(userRef, state);
@@ -217,66 +258,60 @@
 
         function getIds(containerId) {
             const container = document.getElementById(containerId);
-            return Array.from(container.children).map(el => el.id);
+            return container ? Array.from(container.children).map(el => el.id) : [];
         }
 
-        // On Load & Disconnect
-        set(userRef, { pool: Array.from({length:28}, (_,i)=>`card-${i+1}`), lastUpdate: Date.now() }); // Init
-        onDisconnect(userRef).remove(); // ลบเมื่อปิดเว็บ
+        set(userRef, { question: "เพิ่งเข้าสู่ระบบ", pool: 28, lastUpdate: Date.now() });
+        onDisconnect(userRef).remove();
 
-        // --- Admin Logic ---
-        let currentWatchId = null;
-
+        // --- Admin Listener ---
         window.startAdminMonitor = () => {
-            const sessionsRef = ref(db, 'sessions');
+            const sessionsRef = ref(db, 'live_sessions');
             onValue(sessionsRef, (snapshot) => {
                 const data = snapshot.val() || {};
-                const list = document.getElementById('user-list');
-                const count = Object.keys(data).length;
-                document.getElementById('online-count').innerText = `${count} Online`;
+                const grid = document.getElementById('user-grid');
+                document.getElementById('online-count').innerText = `${Object.keys(data).length} Online`;
                 
-                list.innerHTML = '';
+                grid.innerHTML = '';
                 Object.keys(data).forEach(uid => {
-                    const div = document.createElement('div');
-                    div.className = `user-card ${currentWatchId === uid ? 'active' : ''}`;
-                    div.innerHTML = `<span>👤</span><span class="user-id">${uid}</span>`;
-                    div.onclick = () => watchUser(uid, data[uid]);
-                    list.appendChild(div);
+                    const user = data[uid];
+                    const timeStr = new Date(user.lastUpdate).toLocaleTimeString('th-TH');
+                    
+                    const card = document.createElement('div');
+                    card.className = 'admin-card';
+                    card.innerHTML = `
+                        <div class="ac-header">
+                            <span class="ac-uid">👤 ${uid}</span>
+                            <span class="ac-time">อัปเดต: ${timeStr}</span>
+                        </div>
+                        <div class="ac-topic">📝 ${user.question || 'กำลังสุ่มคำถาม...'}</div>
+                        <div class="ac-stat-row"><span>🔥 Tier S (ที่สุด):</span> <span class="ac-stat-val">${user.s || 0} คน</span></div>
+                        <div class="ac-stat-row"><span>⚡ Tier A (ตัวตึง):</span> <span class="ac-stat-val">${user.a || 0} คน</span></div>
+                        <div class="ac-stat-row" style="color:#64748b; margin-top:10px;"><span>📦 อยู่ในกล่อง:</span> <span>${user.pool || 0} คน</span></div>
+                    `;
+                    grid.appendChild(card);
                 });
-
-                // Update Mirror Screen if watching someone
-                if (currentWatchId && data[currentWatchId]) {
-                    renderMirror(data[currentWatchId]);
-                }
             });
         };
-
-        window.watchUser = (uid, data) => {
-            currentWatchId = uid;
-            document.getElementById('mirror-screen').classList.add('live');
-            renderMirror(data);
-        };
-
-        function renderMirror(data) {
-            const screen = document.getElementById('mirror-screen');
-            // สร้าง HTML จำลองหน้าจอ User
-            screen.innerHTML = `
-                <div style="background:#334155; padding:10px; border-radius:8px; color:white; margin-bottom:5px;">Tier S (${data.s?.length || 0})</div>
-                <div style="background:#334155; padding:10px; border-radius:8px; color:white; margin-bottom:5px;">Tier A (${data.a?.length || 0})</div>
-                <div style="background:#334155; padding:10px; border-radius:8px; color:white; margin-bottom:5px;">Tier B (${data.b?.length || 0})</div>
-                <div style="background:white; color:black; padding:10px; border-radius:8px; margin-top:10px;">ในกล่อง: ${data.pool?.length || 0} คน</div>
-                <div style="font-size:0.7rem; color:#cbd5e1; text-align:right; margin-top:5px;">Last move: ${new Date(data.lastUpdate).toLocaleTimeString()}</div>
-            `;
-        }
     </script>
 
     <script>
-        MobileDragDrop.polyfill({ dragImageCenterOnTouch: true, holdToDrag: 50 });
+        // ตั้งค่า Polyfill ให้ลากง่ายที่สุด
+        MobileDragDrop.polyfill({ 
+            dragImageCenterOnTouch: true, 
+            holdToDrag: 100 // กดแช่ 0.1 วิแล้วลากได้เลย
+        });
+
+        // ใช้งาน CSS ของ Polyfill เพื่อบังคับไม่ให้จอเลื่อนตอนลาก
+        window.addEventListener('touchmove', function() {}, {passive: false});
 
         const config = { total: 28, maleMax: 12 };
-        let questions = ["จัดอันดับคนปากเหม็น", "จัดอันดับคนเรียนเก่ง", "จัดอันดับคนฮา"];
-        
-        // --- Init ---
+        const eggs = { "card-6": "รุ่นใหญ่", "card-3": "เอกชัย", "card-8": "จารโป๊ะ", "card-21": "ข้าวมันไก่", "card-22": "จารบิ๊ก", "card-26": "หมางอย", "card-28": "สพต" };
+        let questions = [
+            "จัดอันดับคนที่ปากเหม็นที่สุด", "จัดอันดับคนที่เรียนเก่งจนน่าหมั่นไส้", "จัดอันดับคนที่ขี้เกียจอาบน้ำที่สุด", 
+            "จัดอันดับคนที่แอบหลับเนียนที่สุด", "จัดอันดับคนที่ตลกฝืดสนิท", "จัดอันดับคนที่กวนประสาทเบอร์หนึ่ง"
+        ];
+
         window.onload = () => {
             const pool = document.getElementById('pool');
             for(let i=1; i<=config.total; i++) {
@@ -286,65 +321,51 @@
                 div.draggable = true;
                 div.style.backgroundImage = `url('${i}.jpg')`;
                 
-                // --- Mobile Drag Fix ---
                 div.addEventListener('dragstart', (e) => {
                     e.dataTransfer.setData("text", e.target.id);
-                    if(window.innerWidth < 1024 && div.parentElement.id === 'pool') closeDrawer();
+                    // --- แก้ไข: เอา closeDrawer ออกจากตรงนี้ เพื่อไม่ให้จอขยับตอนเริ่มลาก ---
+                });
+                
+                div.addEventListener('dragend', () => {
+                    // ปิด Drawer เมื่อลาก "เสร็จแล้ว" เท่านั้น
+                    if(window.innerWidth < 1024) closeDrawer();
                 });
 
-                // --- Mobile Tap-to-Move ---
-                div.onclick = () => {
-                    // 1. สลับสถานะ Selected
-                    const isSelected = div.classList.contains('selected');
-                    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
-                    
-                    if(!isSelected) {
-                        div.classList.add('selected'); // เลือกรูป
-                    } else {
-                        // 2. ถ้าเลือกอยู่แล้ว กดซ้ำ = ย้ายอัตโนมัติ (Auto Move)
-                        if(div.parentElement.id === 'pool') {
-                            document.getElementById('tier-s').appendChild(div); // เข้า S
-                        } else {
-                            document.getElementById('pool').appendChild(div); // กลับกล่อง
-                        }
-                        div.classList.remove('selected');
-                        if(window.syncScreen) window.syncScreen(); // Sync Firebase
-                    }
-                };
                 pool.appendChild(div);
             }
-            bindDropZones();
+            updateCount(); bindDropZones();
         };
 
-        // --- Logic ---
         function bindDropZones() {
             document.querySelectorAll('.tier-content, #pool, #trash-bin').forEach(zone => {
-                zone.ondragover = e => e.preventDefault();
+                zone.ondragover = e => { e.preventDefault(); if(zone.id === 'trash-bin') zone.classList.add('drag-over'); };
+                zone.ondragleave = e => { if(zone.id === 'trash-bin') zone.classList.remove('drag-over'); };
                 zone.ondrop = e => {
                     e.preventDefault();
+                    if(zone.id === 'trash-bin') zone.classList.remove('drag-over');
+
                     const id = e.dataTransfer.getData("text");
                     const card = document.getElementById(id);
                     if(!card) return;
+
                     if(zone.id === 'trash-bin') { 
-                        card.style.transform = "scale(0)"; setTimeout(() => { card.remove(); if(window.syncScreen) window.syncScreen(); }, 300);
+                        card.style.transform = "scale(0)"; 
+                        setTimeout(() => { card.remove(); if(window.syncScreen) window.syncScreen(); }, 300);
                     } else { 
                         zone.appendChild(card);
+                        card.classList.remove('dookdik'); void card.offsetWidth; card.classList.add('dookdik');
+                        if(eggs[id]) {
+                            const rect = card.getBoundingClientRect();
+                            spawnText(rect.left + 20, rect.top, eggs[id]);
+                        }
                         if(window.syncScreen) window.syncScreen();
                     }
+                    updateCount();
                 };
-                // เพิ่ม Tap to Place (จิ้มที่โซนเพื่อวางรูปที่เลือก)
-                zone.onclick = () => {
-                    const selected = document.querySelector('.card.selected');
-                    if(selected) {
-                        zone.appendChild(selected);
-                        selected.classList.remove('selected');
-                        if(window.syncScreen) window.syncScreen();
-                    }
-                }
             });
         }
 
-        // --- Secret Code (R-R-L) ---
+        // --- Secret Trigger (R-R-L) ---
         let taps = []; let tapTimer;
         window.registerTap = (side) => {
             taps.push(side); clearTimeout(tapTimer); tapTimer = setTimeout(() => { taps = []; }, 2000);
@@ -356,26 +377,42 @@
                 closeModal('modal-admin-auth');
                 document.getElementById('admin-panel').classList.add('active');
                 if(window.startAdminMonitor) window.startAdminMonitor();
-            } else { alert('รหัสผิด'); }
+            } else { alert('รหัสผ่านไม่ถูกต้อง'); }
         }
-        function closeAdminPanel() { document.getElementById('admin-panel').classList.remove('active'); }
 
-        // --- Helpers ---
+        // --- Core UI Functions ---
+        function closeAdminPanel() { document.getElementById('admin-panel').classList.remove('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function handleReset() { 
-            if(confirm("ล้างกระดาน?")) { 
-                document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); 
-                if(window.syncScreen) window.syncScreen();
-            }
-        }
-        function toggleDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.toggle('open'); }
-        function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
+        function openInputModal() { document.getElementById('modal-input').classList.add('active'); }
+        function openConfirmModal(t, d, cb) { document.getElementById('confirm-title').innerText = t; document.getElementById('confirm-desc').innerText = d; document.getElementById('btn-confirm-yes').onclick = () => { cb(); closeModal('modal-confirm'); }; document.getElementById('modal-confirm').classList.add('active'); }
+        
+        function confirmAddQ() { const v = document.getElementById('inp-q').value; if(v) { questions.push(v); document.getElementById('q-text').innerText = v; if(window.syncScreen) window.syncScreen(); } closeModal('modal-input'); document.getElementById('inp-q').value = ''; }
+        function handleReset() { openConfirmModal("ล้างกระดาน?", "เพื่อนจะกลับเข้ากล่องทั้งหมด", () => { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); updateCount(); if(window.syncScreen) window.syncScreen(); }); }
+        function handleRemoveTier(btn) { openConfirmModal("ลบแถว?", "รูปจะกลับเข้ากล่อง", () => { btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); btn.parentElement.remove(); updateCount(); if(window.syncScreen) window.syncScreen(); }); }
+        
+        function addNewTier() { const d = document.createElement('div'); d.className = 'tier-row'; d.innerHTML = `<div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank new" contenteditable="true">ใหม่</div><div class="tier-content"></div>`; document.getElementById('tier-stack').appendChild(d); bindDropZones(); }
+        function spawnText(x, y, text) { const s = document.createElement('span'); s.className = 'float-text'; s.innerText = text; s.style.left = x+'px'; s.style.top = y+'px'; document.body.appendChild(s); setTimeout(()=>s.remove(),2500); }
+        
         function spin() { 
-            let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15) clearInterval(t); },60); 
+            let c=0; const t=setInterval(()=>{ 
+                document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; 
+                c++; 
+                if(c>15) { clearInterval(t); if(window.syncScreen) window.syncScreen(); } 
+            }, 60); 
         }
+
         function saveImg() { 
-            html2canvas(document.getElementById('capture-zone'),{backgroundColor:'#64748b',useCORS:true,scale:2}).then(c=>{ const a=document.createElement('a'); a.download='tier.png'; a.href=c.toDataURL(); a.click(); }); 
+            const btnAdd = document.querySelector('.add-tier-btn'); const btnsDel = document.querySelectorAll('.tier-del-btn');
+            btnAdd.style.display = 'none'; btnsDel.forEach(b => b.style.display = 'none');
+            html2canvas(document.getElementById('capture-zone'),{backgroundColor:'#1e293b',useCORS:true,scale:2}).then(c=>{ 
+                const a=document.createElement('a'); a.download='tier-list.png'; a.href=c.toDataURL(); a.click(); 
+                btnAdd.style.display = 'flex'; btnsDel.forEach(b => b.style.display = '');
+            }); 
         }
+
+        function toggleDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.toggle('open'); }
+        function closeDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.remove('open'); }
+        function updateCount() { document.getElementById('count').innerText = document.getElementById('pool').children.length; }
     </script>
 </body>
 </html>
