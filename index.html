@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tier List 6/1 - Eternal Masterpiece</title>
+    <title>Tier List - 6/1</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
@@ -22,90 +22,140 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; outline: none; margin: 0; padding: 0; }
         body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Kanit', sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* --- Animations --- */
+        /* --- 🌟 Animations --- */
         @keyframes bounceDrop { 0% { transform: scale(1); } 50% { transform: scale(1.15) rotate(5deg); } 70% { transform: scale(0.95) rotate(-5deg); } 100% { transform: scale(1) rotate(0); } }
         .bouncy { animation: bounceDrop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        /* --- Secret Triggers --- */
+        /* --- Secret Triggers (ยึดมุมบนสุด) --- */
         .secret-trigger { position: fixed; top: 0; width: 80px; height: 80px; z-index: 9999; }
         #trigger-left { left: 0; } #trigger-right { right: 0; }
 
-        /* --- 📡 PRO ADMIN PANEL --- */
-        #admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(20px); color: #e2e8f0; z-index: 10000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
-        #admin-panel.active { display: flex; animation: fadeIn 0.4s ease; }
+        /* --- 📡 ADMIN PANEL --- */
+        #admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); color: #e2e8f0; z-index: 10000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
+        #admin-panel.active { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.1); padding: 15px 25px; border-radius: 25px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        .mirror-card { background: #1e293b; border-radius: 20px; padding: 20px; border: 2px solid #334155; transition: 0.3s; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
-        .mc-topic { text-align: center; color: #fbbf24; font-weight: 700; margin-bottom: 15px; font-size: 0.95rem; background: rgba(251,191,36,0.1); padding: 8px; border-radius: 10px; border: 1px solid rgba(251,191,36,0.2); }
-        .mini-tier { display: flex; background: #0f172a; border-radius: 10px; overflow: hidden; margin-bottom: 6px; min-height: 45px; border: 1px solid rgba(255,255,255,0.05); }
-        .mini-rank { width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: rgba(0,0,0,0.8); text-align: center; }
-        .mini-content { flex-grow: 1; padding: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
-        .mini-img { width: 30px; height: 30px; border-radius: 6px; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.15); }
+
+        .admin-header { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .mirror-card { background: #1e293b; border-radius: 15px; padding: 15px; border: 2px solid #334155; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .mirror-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .mc-head { display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 10px; }
+        .mc-topic { text-align: center; color: #fbbf24; font-weight: 700; margin-bottom: 15px; font-size: 1.1rem; }
+        
+        .mini-tier { display: flex; background: #0f172a; border-radius: 8px; overflow: hidden; margin-bottom: 5px; min-height: 40px;}
+        .mini-rank { width: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; color: rgba(0,0,0,0.7); }
+        .mini-content { flex-grow: 1; padding: 5px; display: flex; flex-wrap: wrap; gap: 4px; }
+        .mini-img { width: 30px; height: 30px; border-radius: 5px; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.2); }
 
         /* --- Modals --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 11000; display: none; justify-content: center; align-items: center; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 11000; display: none; justify-content: center; align-items: center; }
         .modal-overlay.active { display: flex; }
-        .modal-box { background: white; width: 90%; max-width: 340px; border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
-        .modal-input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 15px; margin: 15px 0; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; color: var(--text-main); }
-        .btn-modal { padding: 12px; border-radius: 15px; border: none; font-weight: 700; cursor: pointer; flex: 1; font-family: 'Kanit'; transition: 0.2s; }
+        .modal-box { background: white; width: 90%; max-width: 320px; border-radius: 25px; padding: 25px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; margin: 15px 0; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; }
+        .btn-modal { padding: 12px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; flex: 1; font-family: 'Kanit'; font-size: 1rem; transition: 0.2s; }
 
-        /* --- Floating UI --- */
-        .btn-save-float { position: fixed; bottom: 170px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #10b981; color: white; border: none; font-size: 1.6rem; z-index: 2000; cursor: pointer; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .btn-save-float:active { transform: scale(0.9); }
-        .trash-float { position: fixed; bottom: 95px; right: 20px; width: 70px; height: 70px; border-radius: 50%; background: var(--trash-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; z-index: 2000; border: 4px solid white; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        /* --- Floating Buttons (ย้ายปุ่มกล้องมาอยู่ล่างขวา) --- */
+        .btn-save-float { 
+            position: fixed; 
+            bottom: 160px; /* เหนือถังขยะ */
+            right: 15px; 
+            width: 55px; height: 55px; 
+            border-radius: 50%; background: #10b981; color: white; border: none; 
+            font-size: 1.5rem; z-index: 2000; cursor: pointer; 
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); 
+            display: flex; align-items: center; justify-content: center;
+        }
+        .trash-float { 
+            position: fixed; 
+            bottom: 90px; 
+            right: 15px; 
+            width: 65px; height: 65px; 
+            border-radius: 50%; background: var(--trash-color); color: white; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1.8rem; z-index: 2000; border: 3px solid white; 
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); transition: 0.3s; 
+        }
         .trash-float.drag-over { transform: scale(1.3) rotate(15deg); background: #b91c1c; }
 
         /* --- Main App UI --- */
-        .main-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 10px 100px 10px; }
-        .capture-wrapper { width: 100%; max-width: 850px; display: flex; flex-direction: column; align-items: center; background: white; padding: 20px; border-radius: 35px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        h1 { color: #1e293b; font-weight: 800; margin-bottom: 15px; font-size: 1.8rem; text-align: center; }
-        .control-panel { background: #f8fafc; border-radius: 25px; padding: 15px; width: 100%; text-align: center; border: 2px dashed #cbd5e1; margin-bottom: 25px; }
-        #q-text { font-size: 1.3rem; font-weight: 800; color: var(--accent); min-height: 40px; margin-bottom: 15px; line-height: 1.4; }
-        .btn-icon { width: 50px; height: 50px; border-radius: 50%; font-size: 1.4rem; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.1); transition: 0.2s; }
-        .btn-icon:active { transform: scale(0.9); }
-
-        /* --- Tier Container --- */
-        .tier-container { width: 100%; display: flex; flex-direction: column; gap: 10px; }
-        .tier-row { display: flex; background: #f1f5f9; border-radius: 18px; overflow: hidden; min-height: 85px; position: relative; border: 2px solid #e2e8f0; transition: border-color 0.3s; }
-        .tier-del-btn { position: absolute; left: 6px; top: 6px; width: 24px; height: 24px; background: rgba(0,0,0,0.15); color: white; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-weight: 800; }
-        .tier-rank { width: 75px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: rgba(0,0,0,0.7); text-align: center; cursor: text; line-height: 1.2; padding: 5px; }
-        .tier-content { flex-grow: 1; padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; min-height: 85px; transition: background 0.2s; }
-        .add-tier-btn { background: rgba(0,0,0,0.04); border: 2px dashed #cbd5e1; color: #94a3b8; padding: 15px; margin-top: 15px; border-radius: 20px; text-align: center; cursor: pointer; width: 100%; font-weight: 800; font-size: 1rem; transition: 0.3s; }
-        .add-tier-btn:hover { background: rgba(0,0,0,0.08); color: #64748b; }
+        .main-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 15px 10px 100px 10px; }
+        .capture-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; background: white; padding: 15px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         
-        .s { background: #fca5a5; } .a { background: #fdba74; } .b { background: #fde047; } .c { background: #86efac; } .d { background: #93c5fd; } .new-tier { background: #e2e8f0; }
+        h1 { color: #1e293b; font-weight: 800; margin-bottom: 10px; font-size: 1.6rem; text-align: center; }
+        .control-panel { background: #f8fafc; border-radius: 15px; padding: 10px; width: 100%; text-align: center; border: 2px dashed #cbd5e1; margin-bottom: 15px; }
+        #q-text { font-size: 1.2rem; font-weight: 800; color: var(--accent); min-height: 35px; margin-bottom: 10px; }
+        .btn-icon { width: 45px; height: 45px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; }
+        .btn-icon:active { transform: scale(0.9); }
+        .btn-primary { background: var(--accent); color: white; } 
 
-        /* --- Card System --- */
-        .card {
-            width: 52px; height: 52px; background-size: cover; background-position: center; border-radius: 14px; cursor: grab; background-color: #cbd5e1;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12); flex-shrink: 0; touch-action: none; user-select: none;
-            transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.2s;
+        /* --- ✨ Tier List UI (แก้ไขปัญหาชื่อเทียร์หด) ✨ --- */
+        .tier-container { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        .tier-row { display: flex; background: #f1f5f9; border-radius: 14px; overflow: hidden; min-height: 70px; position: relative; border: 2px solid #e2e8f0; }
+        .tier-del-btn { position: absolute; left: 4px; top: 4px; width: 20px; height: 20px; background: rgba(0,0,0,0.3); color: white; border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-weight: bold; }
+        
+        /* THE FIX: เพิ่ม flex-shrink: 0 เพื่อกันหัวข้อหดตัว */
+        .tier-rank { 
+            width: 60px; 
+            flex-shrink: 0; /* ล็อกขนาด ห้ามเบราว์เซอร์บีบ! */
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1rem; font-weight: 800; color: rgba(0,0,0,0.7); 
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.4); text-align: center; 
         }
-        .tier-content .card { width: 62px; height: 62px; box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+        
+        .tier-content { flex-grow: 1; padding: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; min-height: 70px; transition: background 0.2s; }
+        
+        .s { background: #fca5a5; } .a { background: #fdba74; } .b { background: #fde047; } .c { background: #86efac; } .d { background: #93c5fd; } .new { background: #cbd5e1; }
+
+        /* --- Friend Card --- */
+        .card {
+            width: 50px; height: 50px; 
+            background-size: cover; background-position: center;
+            border-radius: 12px; cursor: grab; background-color: #cbd5e1;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15); flex-shrink: 0;
+            touch-action: none; user-select: none; -webkit-user-select: none;
+            transition: width 0.2s, height 0.2s, transform 0.2s;
+        }
+        
+        .tier-content .card { width: 55px; height: 55px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .card.male { border: 2px solid #38bdf8; } .card.female { border: 2px solid #f472b6; }
-        .ghost-card { position: fixed; pointer-events: none; z-index: 99999; opacity: 0.9; transform: scale(1.1) rotate(5deg); width: 65px; height: 65px; border-radius: 14px; background-size: cover; background-position: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        
+        .ghost-card { position: fixed; pointer-events: none; z-index: 99999; opacity: 0.9; transform: scale(1.1) rotate(5deg); box-shadow: 0 15px 30px rgba(0,0,0,0.4); width: 60px; height: 60px; border-radius: 12px; background-size: cover; background-position: center; }
 
         /* Easter Egg */
-        .float-text { position: absolute; color: #fbbf24; font-weight: 900; font-size: 1.6rem; text-shadow: 2px 2px 0 #000, 0 0 10px rgba(251,191,36,0.5); pointer-events: none; z-index: 9999; white-space: nowrap; animation: floatThenSpin 2.5s ease-in-out forwards; }
-        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -50px) scale(1.1); } 100% { opacity: 0; transform: translate(300px, -450px) scale(0.2) rotate(1080deg); } }
+        .float-text { position: absolute; color: #fbbf24; font-weight: 800; font-size: 1.5rem; text-shadow: 2px 2px 0 #000; pointer-events: none; z-index: 9999; white-space: nowrap; animation: floatThenSpin 2.5s ease-in-out forwards; }
+        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -40px) scale(1.1) rotate(0deg); } 100% { opacity: 0; transform: translate(200px, -300px) scale(0.2) rotate(1080deg); } }
 
-        /* --- Drawer --- */
-        .inventory-drawer { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.96); backdrop-filter: blur(20px); border-radius: 35px 35px 0 0; box-shadow: 0 -15px 40px rgba(0,0,0,0.12); z-index: 990; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(calc(100% - 55px)); display: flex; flex-direction: column; height: 38vh; min-height: 250px; border-top: 2px solid white; }
+        /* --- Inventory Drawer --- */
+        .inventory-drawer { 
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(15px);
+            border-radius: 25px 25px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.15); 
+            z-index: 990; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform: translateY(calc(100% - 45px)); display: flex; flex-direction: column; 
+            height: 35vh; min-height: 220px; border-top: 2px solid white;
+        }
         .inventory-drawer.open { transform: translateY(0); }
-        .drawer-header { height: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .drawer-handle { width: 60px; height: 6px; background: #cbd5e1; border-radius: 10px; }
-        .drawer-content { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .drawer-header { height: 45px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; background: transparent; }
+        .drawer-handle { width: 50px; height: 5px; background: #cbd5e1; border-radius: 10px; margin-right: 10px; }
+        .drawer-content { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 
+        /* --- Desktop Mode --- */
         @media (min-width: 1024px) {
-            body { flex-direction: row; }
+            body { flex-direction: row; background: var(--bg-body); }
             .main-wrapper { width: calc(100% - var(--drawer-width)); padding: 40px; margin-right: var(--drawer-width); height: 100vh; overflow-y: auto; }
+            .capture-wrapper { padding: 30px; }
+            .tier-rank { width: 80px; font-size: 1.2rem; }
+            .tier-row { min-height: 90px; }
+            .tier-content { padding: 10px; gap: 10px; }
             .inventory-drawer { position: fixed; top: 0; right: 0; bottom: 0; left: auto; width: var(--drawer-width); height: 100vh; transform: none !important; border-radius: 0; border-left: 2px solid #e2e8f0; }
             .drawer-header { pointer-events: none; } .drawer-handle { display: none; }
-            .btn-save-float { right: calc(var(--drawer-width) + 25px); bottom: 130px; } 
-            .trash-float { right: calc(var(--drawer-width) + 25px); bottom: 35px; }
-            .card { width: 65px; height: 65px; } .tier-content .card { width: 85px; height: 85px; }
-            .tier-rank { width: 85px; font-size: 1.1rem; }
+            
+            /* ในคอมปุ่มขยับหลบลิ้นชักปกติ */
+            .btn-save-float { right: calc(var(--drawer-width) + 20px); bottom: 120px; } 
+            .trash-float { right: calc(var(--drawer-width) + 20px); bottom: 30px; }
+            
+            .card { width: 70px; height: 70px; }
+            .tier-content .card { width: 80px; height: 80px; } 
         }
     </style>
 </head>
@@ -116,23 +166,22 @@
 
     <div id="admin-panel">
         <div class="admin-header">
-            <h2>📡 PRO LIVE FEED</h2>
+            <h2>📡 REAL-TIME MONITOR</h2>
             <div style="display:flex; gap:15px; align-items:center;">
-                <span id="online-count" style="background:#10b981; color:white; padding:6px 15px; border-radius:30px; font-weight:900; font-size:0.85rem; box-shadow: 0 4px 10px rgba(16,185,129,0.3);">0 ON</span>
-                <button onclick="closeAdminPanel()" style="background:#ef4444; color:white; border:none; padding:10px 20px; border-radius:15px; cursor:pointer; font-weight:800; transition:0.2s;">EXIT</button>
+                <span id="online-count" style="background:var(--accent); color:white; padding:5px 15px; border-radius:20px; font-weight:bold;">0 Online</span>
+                <button onclick="closeAdminPanel()" style="background:#ef4444; color:white; border:none; padding:8px 20px; border-radius:10px; cursor:pointer; font-weight:bold;">ปิด</button>
             </div>
         </div>
         <div class="admin-grid" id="user-grid">
-            <div style="color:#64748b; text-align:center; grid-column: 1 / -1; margin-top:100px; font-size:1.4rem;">Waiting for connections...</div>
+            <div style="color:#94a3b8; text-align:center; grid-column: 1 / -1; margin-top:50px; font-size:1.2rem;">กำลังรอข้อมูลจากผู้เล่น...</div>
         </div>
     </div>
 
     <div id="modal-admin-auth" class="modal-overlay">
         <div class="modal-box">
-            <h3 style="margin-bottom:5px; color:#1e293b;">🔐 แอดมินมินิสเทรเตอร์</h3>
-            <p style="font-size:0.8rem; color:#94a3b8;">โปรดระบุรหัสผ่านเพื่อเข้าถึงข้อมูลแบบเรียลไทม์</p>
-            <input id="inp-pin" type="tel" class="modal-input" placeholder="0 0 0 0" maxlength="4" style="letter-spacing: 12px; font-weight:900;">
-            <div style="display:flex; gap:12px;">
+            <h3 style="margin:0; color:#1e293b;">🔐 รหัสผ่าน (0909)</h3>
+            <input id="inp-pin" type="tel" class="modal-input" placeholder="* * * *" maxlength="4" style="letter-spacing: 10px; font-weight:900;">
+            <div style="display:flex; gap:10px;">
                 <button class="btn-modal" style="background:#f1f5f9; color:#64748b;" onclick="closeModal('modal-admin-auth')">ยกเลิก</button>
                 <button class="btn-modal" style="background:var(--accent); color:white;" onclick="checkPin()">เข้าสู่ระบบ</button>
             </div>
@@ -141,9 +190,23 @@
 
     <div id="modal-input" class="modal-overlay">
         <div class="modal-box">
-            <h3 style="color:#1e293b; margin-bottom:10px;">✏️ ตั้งหัวข้อจัดเทียร์</h3>
-            <input id="inp-q" class="modal-input" placeholder="พิมพ์สิ่งที่คุณอยากจัดอันดับ...">
-            <button class="btn-modal" style="background:var(--accent); color:white; width:100%;" onclick="confirmAddQ()">ใช้หัวข้อนี้เลย!</button>
+            <h3 style="margin:0 0 10px 0; color:#1e293b;">✏️ เพิ่มคำถามใหม่</h3>
+            <input id="inp-q" class="modal-input" placeholder="พิมพ์คำถามที่นี่...">
+            <div style="display:flex; gap:10px;">
+                <button class="btn-modal" style="background:#f1f5f9; color:#64748b;" onclick="closeModal('modal-input')">ยกเลิก</button>
+                <button class="btn-modal" style="background:var(--accent); color:white;" onclick="confirmAddQ()">เพิ่มเลย</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="modal-overlay">
+        <div class="modal-box">
+            <h3 id="confirm-title" style="margin:0 0 10px 0; color:#1e293b;">ยืนยัน?</h3>
+            <p id="confirm-desc" style="color:#64748b; margin-bottom:20px;">...</p>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-modal" style="background:#f1f5f9; color:#64748b;" onclick="closeModal('modal-confirm')">ยกเลิก</button>
+                <button id="btn-confirm-yes" class="btn-modal" style="background:#ef4444; color:white;">ยืนยัน</button>
+            </div>
         </div>
     </div>
 
@@ -152,30 +215,32 @@
 
     <div class="main-wrapper">
         <div class="capture-wrapper" id="capture-zone">
-            <h1 style="background: linear-gradient(to right, #ec4899, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TIER LIST 6/1</h1>
+            <h1>✨ จัดอันดับเพื่อน 6/1 ✨</h1>
             
             <div class="control-panel">
-                <div id="q-text">มาสุ่มหัวข้อสนุกๆ กันเถอะ!</div>
+                <div id="q-text">สุ่มคำถามจัดเทียร์!</div>
                 <div style="display:flex; justify-content:center; gap:15px;" data-html2canvas-ignore="true">
-                    <button class="btn-icon" style="background:var(--accent); color:white; font-size:1.6rem;" onclick="spin()">🎲</button>
+                    <button class="btn-icon btn-primary" onclick="spin()">🎲</button>
                     <button class="btn-icon" style="background:#10b981; color:white;" onclick="openInputModal()">➕</button>
                     <button class="btn-icon" style="background:#ef4444; color:white;" onclick="handleReset()">🔄</button>
                 </div>
             </div>
 
             <div class="tier-container" id="tier-stack">
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank s" ondblclick="editTierName(this)">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank a" ondblclick="editTierName(this)">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank b" ondblclick="editTierName(this)">โหด</div><div class="tier-content" id="tier-b"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank c" ondblclick="editTierName(this)">เฉยๆ</div><div class="tier-content" id="tier-c"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank d" ondblclick="editTierName(this)">พัก</div><div class="tier-content" id="tier-d"></div></div>
-            </div>
-            <div class="add-tier-btn" onclick="addNewTier()" data-html2canvas-ignore="true">➕ เพิ่มแถวเทียร์ใหม่</div>
+    <div class="tier-row"><div class="tier-rank s">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
+    <div class="tier-row"><div class="tier-rank a">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
+    <div class="tier-row"><div class="tier-rank b">โหด</div><div class="tier-content" id="tier-b"></div></div>
+    <div class="tier-row"><div class="tier-rank c">เฉยๆ</div><div class="tier-content" id="tier-c"></div></div>
+    <div class="tier-row"><div class="tier-rank d">พัก</div><div class="tier-content" id="tier-d"></div></div>
+</div>
         </div>
     </div>
 
     <div class="inventory-drawer" id="drawer">
-        <div class="drawer-header" onclick="toggleDrawer()"><div class="drawer-handle"></div></div>
+        <div class="drawer-header" onclick="toggleDrawer()">
+            <div class="drawer-handle"></div>
+            <span style="font-size:0.85rem; color:#64748b; font-weight:700;">📦 แตะเพื่อเปิดกล่องเพื่อน (<span id="count">0</span>)</span>
+        </div>
         <div class="drawer-content" id="pool"></div>
     </div>
 
@@ -186,182 +251,250 @@
         const firebaseConfig = { apiKey: "AIzaSyDihX2x7-HzugJSFEHraZGsOUrLXiB2ChU", authDomain: "shop-25ffb.firebaseapp.com", databaseURL: "https://shop-25ffb-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "shop-25ffb", storageBucket: "shop-25ffb.firebasestorage.app", messagingSenderId: "684533270600", appId: "1:684533270600:web:0fd955874c6310c0f3707d", measurementId: "G-F21MPV5Z67" };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const userId = 'ID_' + Math.floor(Math.random() * 8999 + 1000);
+        
+        const userId = 'ID_' + Math.floor(Math.random() * 9000 + 1000);
         const userRef = ref(db, 'live_mirror/' + userId);
 
         window.syncScreen = () => {
-            const tiers = Array.from(document.querySelectorAll('.tier-row')).map(row => ({
-                name: row.querySelector('.tier-rank').innerText,
-                items: Array.from(row.querySelector('.tier-content').children).map(c => c.id.replace('card-', ''))
-            }));
-            set(userRef, { q: document.getElementById('q-text').innerText, tiers, pool: document.getElementById('pool').children.length, time: Date.now() });
+            set(userRef, {
+                q: document.getElementById('q-text').innerText,
+                s: getIds('tier-s'), a: getIds('tier-a'), b: getIds('tier-b'), c: getIds('tier-c'), d: getIds('tier-d'),
+                pool: getIds('pool').length, time: Date.now()
+            });
         };
+
+        function getIds(id) { const el = document.getElementById(id); return el ? Array.from(el.children).map(c => c.id.replace('card-', '')) : []; }
+
+        set(userRef, { q: "เพิ่งเข้ามา...", pool: 28, time: Date.now() });
         onDisconnect(userRef).remove();
 
         window.startAdminMonitor = () => {
             onValue(ref(db, 'live_mirror'), (snapshot) => {
                 const data = snapshot.val() || {};
                 const grid = document.getElementById('user-grid');
-                document.getElementById('online-count').innerText = `${Object.keys(data).length} ON`;
+                document.getElementById('online-count').innerText = `${Object.keys(data).length} Online`;
+                
                 grid.innerHTML = '';
                 Object.keys(data).forEach(uid => {
                     const u = data[uid];
                     const timeStr = new Date(u.time).toLocaleTimeString('th-TH');
                     const buildImgs = (arr) => (arr||[]).map(num => `<div class="mini-img" style="background-image:url('${num}.jpg')"></div>`).join('');
+
                     const card = document.createElement('div');
                     card.className = 'mirror-card';
-                    let tiersHtml = (u.tiers || []).map(t => `
-                        <div class="mini-tier">
-                            <div class="mini-rank" style="background:${getRankColor(t.name)}">${t.name}</div>
-                            <div class="mini-content">${buildImgs(t.items)}</div>
-                        </div>
-                    `).join('');
-                    card.innerHTML = `<div style="display:flex; justify-content:space-between; margin-bottom:12px;"><span style="color:#38bdf8; font-weight:900;">👤 ${uid}</span><span style="color:#64748b; font-size:0.75rem;">${timeStr}</span></div><div class="mc-topic">📝 ${u.q}</div>${tiersHtml}<div style="text-align:center; color:#475569; font-size:0.7rem; margin-top:10px;">📦 In Box: ${u.pool} photos</div>`;
+                  card.innerHTML = `
+    <div class="mc-head">
+        <span style="color:#38bdf8; font-weight:bold;">👤 ${uid}</span>
+        <span style="color:#64748b; font-size:0.8rem;">${timeStr}</span>
+    </div>
+    <div class="mc-topic">📝 ${u.q}</div>
+    
+    <div class="mini-tier"><div class="mini-rank s">ที่สุด</div><div class="mini-content">${buildImgs(u.s)}</div></div>
+    <div class="mini-tier"><div class="mini-rank a">ตัวตึง</div><div class="mini-content">${buildImgs(u.a)}</div></div>
+    <div class="mini-tier"><div class="mini-rank b">โหด</div><div class="mini-content">${buildImgs(u.b)}</div></div>
+    <div class="mini-tier"><div class="mini-rank c">เฉยๆ</div><div class="mini-content">${buildImgs(u.c)}</div></div>
+    <div class="mini-tier"><div class="mini-rank d">พัก</div><div class="mini-content">${buildImgs(u.d)}</div></div>
+    
+    <div style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:10px;">📦 ในกล่อง: ${u.pool}</div>
+`;
                     grid.appendChild(card);
                 });
             });
         };
-
-        function getRankColor(name) {
-            if(name.includes('สุด')) return '#fca5a5';
-            if(name.includes('ตึง')) return '#fdba74';
-            if(name.includes('โหด')) return '#fde047';
-            if(name.includes('เฉย')) return '#86efac';
-            return '#93c5fd';
-        }
     </script>
 
     <script>
+        let activeCard = null; let ghost = null; let offsetX = 0, offsetY = 0;
         const config = { total: 28, maleMax: 12 };
         const eggs = { "card-6": "รุ่นใหญ่", "card-3": "เอกชัย", "card-8": "จารโป๊ะ", "card-21": "ข้าวมันไก่", "card-22": "จารบิ๊ก", "card-26": "หมางอย", "card-28": "สพต" };
         let questions = [
-            "จัดอันดับคนที่แบกงานกลุ่มจนหลังหัก", "จัดอันดับคนที่เนียนกินแรงเพื่อน (Social Loafing)", "จัดอันดับคนที่มาสายแต่เดินถือแก้วกาแฟแบบสับ", "จัดอันดับคนที่หลับได้ทุกที่แม้ครูยืนอยู่ข้างๆ", "จัดอันดับคนที่จดเลคเชอร์สวยแต่ไม่รู้เรื่องเลย",
-            "ใครคือความหวังหมู่บ้านตอนสอบมิดเทอม", "ใครคือคนที่ชอบถามคำถามก่อนหมดเวลา 1 นาที", "ใครคือ Red Flag เดินได้ประจำห้อง", "ใครคือคนที่มีพิรุธที่สุดเวลาของหาย", "ใครคือคนที่มีสกิลการแถเอาตัวรอดระดับพระเจ้า",
-            "ใครคือคนที่ครูเรียกชื่อบ่อยที่สุดในคาบ", "ใครคือคนที่เพื่อนชอบเอาไปทำมีม (Meme)", "จัดอันดับคนโลกส่วนตัวสูงจนนึกว่าหายสาบสูญ", "ใครคือที่ปรึกษาปัญหาหัวใจที่ตัวเองยังนก", "ใครคือคนที่มี Energy ล้นตอนเที่ยงแต่ตายตอนเช้า",
-            "จัดอันดับคนที่ปากแจ๋วแต่ใจปลาซิว", "จัดอันดับคนปากเหม็น (อาวุธชีวภาพประจำห้อง)", "ใครฟันเหลืองนวลใยนึกว่าทองคำแท่ง", "ใครเท้าบูดระดับที่พระเจ้ายังส่ายหน้า", "ใครขี้เกียจอาบน้ำที่สุด (กลิ่นตัวแรงจัด)",
-            "ใครคือมนุษย์หน้ามันแผล็บทอดไข่ดาวได้", "ใครคือจอมตดเหม็นเงียบพิฆาตยกห้อง", "ใครชอบแคะขี้มูกป้ายใต้โต๊ะเพื่อน", "ใครใส่ถุงเท้าซ้ำจนแข็งตั้งได้", "ใครหัวเหม็นเปรี้ยวนึกว่าหมักปลาร้า",
-            "ใครหน้าเด็กแต่ใจคุณป้า", "ใครหน้าแก่จนรุ่นน้องนึกว่าเป็นอาจารย์", "ใครคือสายมูตัวพ่อ/ตัวแม่ ไหว้ทุกที่ที่มีเลข", "ใครคือคนขี้งกที่สุดในสามโลก", "ใครคือคนที่เพื่อนยืมเงินแล้วต้องทำใจ",
-            "ใครฉลาดที่สุดแต่คุยกับมนุษย์ไม่รู้เรื่อง", "ใครคือคนที่น่าจะสอบติดหมอแต่เอาดีด้านติ๊กต็อก", "ใครคืออัจฉริยะที่ส่งงานเลทตลอดชาติ", "ใครคือคนที่เก่งภาษาอังกฤษแต่สำเนียงต่างดาว", "ใครคือคนที่น่าจะไปโกอินเตอร์คนแรกของรุ่น",
-            "ใครคือคนที่น่าจะรวยพันล้านแต่ใช้เงินไม่เป็น", "ใครคือคนที่น่าจะได้เป็นประธานบริษัทคนต่อไป", "ใครคือคนที่เก่งคอมระดับแฮกเกอร์ (แต่ใช้ทำเรื่องไร้สาระ)", "ใครคือคนที่ลายมือเหมือนถอดรหัสลับดาววินชี", "ใครคือคนที่น่าจะเป็นดาราเจ้าบทบาทที่สุด",
-            "จัดอันดับคนขี้ขิง ขิงเก่งขิงข่าขิงตะไคร้", "ใครคือเจ้าพ่อ/เจ้าแม่แคปชั่นเสี่ยว", "ใครคือคนที่ติดมือถือจนกาวติดมือ", "ใครคือคนที่ลงสตอรี่ไอจีวันละ 80 รอบ", "ใครคือคนที่ดองแชทเก่งจนแชทขึ้นรา",
-            "ใครคือคนที่น่าจะแต่งงานคนแรกในกลุ่ม", "ใครคือคนที่มีแฟนเงียบๆ แต่เปิดตัวทีช็อกทั้งห้อง", "ใครคือคนที่ขี้งอนระดับ 10 ริกเตอร์", "ใครคือคนที่พูดมากจนลิงยังขอลาพักร้อน", "ใครคือคนขี้ลืมจนเกือบจะลืมชื่อตัวเอง",
-            "ใครคือคนที่น่ารักนะแต่ห้ามพูด", "ใครคือคนที่ทรงอย่างแบดแต่ใจอย่างแบ๊ว", "ใครคือคนที่กินจุที่สุดจนร้านบุฟเฟต์ต้องติดรูปห้ามเข้า", "ใครคือคนที่แต่งตัวมาเรียนเหมือนมาเดินแฟชั่นโชว์", "ใครคือคนที่มีสไตล์การแต่งตัวล้ำยุคเกินไป",
-            "ใครคือคนที่น่าจะโดนตำรวจจับข้อหากวนประสาท", "ใครคือคนที่เพื่อนอยากแกล้งมากที่สุด", "ใครคือคนที่มีความลับเยอะที่สุดในห้อง", "ใครคือคนที่ชอบสปอยล์หนังแบบไม่ได้ขอ", "ใครคือคนที่มั่นใจแบบผิดๆ เสมอ",
-            "ใครคือคนที่ขี้กลัวเกินเหตุจนดูตลก", "ใครคือคนที่ใจเย็นจนนึกว่าพระมาโปรด", "ใครคือคนที่หน้าตึงตลอดเวลาเหมือนโกรธใครมา", "ใครคือคนที่ชอบทำตัวลึกลับน่าสงสัย", "ใครคือคนที่สดใสปลอมๆ แต่ข้างในคือนักล่า",
-            "ใครคือจอมเนียน แอบกินขนมเพื่อนตลอด", "ใครคือคนที่ชอบทวงบุญคุณบ่อยสุด", "ใครคือคนที่เป็นสนามอารมณ์ของเพื่อนสนิท", "ใครคือคนที่น่าจะไม่มีใครเอา", "ใครคือคนที่ติ่งดาราจนเสียสติ",
-            "คนตลกฝืดที่สุด", "คนขี้ตกใจที่สุด", "คนขี้อวดที่สุด", "คนสายเปย์เพื่อน", "คนสายเที่ยวไม่เรียน",
-            "คนซุ่มเรียนเงียบ", "คนขี้บ่นเหมือนแม่", "คนนกถาวร", "คนสายมโนตัวแม่", "คนหลงตัวเองสุด",
-            "คนรวยเงียบ", "คนขี้เหงาที่สุด", "คนโลกส่วนตัวสูง", "คนใจอ่อนง่าย", "คนปากแข็งสุด",
-            "คนสายปาร์ตี้", "คนรักสัตว์สุดๆ", "คนนอนน้ำลายยืด", "คนตื่นสายที่สุด", "คนตึงที่สุดของรุ่น",
-            "คนเก่งวิชาชีวิต", "คนขี้ตกใจเวอร์", "คนชอบเดินหลง", "คนขี้หนาวจัด", "คนขี้ร้อนจัด",
-            "คนชอบเต้นมั่ว", "คนร้องเพลงเพี้ยน", "คนกลัวผีขึ้นสมอง", "คนหน้าเดียวทั้งวัน", "คนที่เป็นที่สุดของ 6/1"
-        ];
+    // --- หมวดพฤติกรรมตัวตึง (Classroom Vibes) ---
+    "จัดอันดับคนที่แบกงานกลุ่มจนหลังหัก", "จัดอันดับคนที่เนียนกินแรงเพื่อน (Social Loafing)", "จัดอันดับคนที่มาสายแต่เดินถือแก้วกาแฟแบบสับ", "จัดอันดับคนที่หลับได้ทุกที่แม้ครูยืนอยู่ข้างๆ", "จัดอันดับคนที่จดเลคเชอร์สวยแต่ไม่รู้เรื่องเลย",
+    "ใครคือความหวังหมู่บ้านตอนสอบมิดเทอม", "ใครคือคนที่ชอบถามคำถามก่อนหมดเวลา 1 นาที", "ใครคือ Red Flag เดินได้ประจำห้อง", "ใครคือคนที่มีพิรุธที่สุดเวลาของหาย", "ใครคือคนที่มีสกิลการแถเอาตัวรอดระดับพระเจ้า",
+    "ใครคือคนที่ครูเรียกชื่อบ่อยที่สุดในคาบ", "ใครคือคนที่เพื่อนชอบเอาไปทำมีม (Meme)", "จัดอันดับคนโลกส่วนตัวสูงจนนึกว่าหายสาบสูญ", "ใครคือที่ปรึกษาปัญหาหัวใจที่ตัวเองยังนก", "ใครคือคนที่มี Energy ล้นตอนเที่ยงแต่ตายตอนเช้า",
 
-        let activeCard = null; let ghost = null; let offsetX = 0, offsetY = 0;
+    // --- หมวดแกงลักษณะ (The Roast & Chaos) ---
+    "จัดอันดับคนที่ปากแจ๋วแต่ใจปลาซิว", "จัดอันดับคนปากเหม็น (อาวุธชีวภาพประจำห้อง)", "ใครฟันเหลืองนวลใยนึกว่าทองคำแท่ง", "ใครเท้าบูดระดับที่พระเจ้ายังส่ายหน้า", "ใครขี้เกียจอาบน้ำที่สุด (กลิ่นตัวแรงจัด)",
+    "ใครคือมนุษย์หน้ามันแผล็บทอดไข่ดาวได้", "ใครคือจอมตดเหม็นเงียบพิฆาตยกห้อง", "ใครชอบแคะขี้มูกป้ายใต้โต๊ะเพื่อน", "ใครใส่ถุงเท้าซ้ำจนแข็งตั้งได้", "ใครหัวเหม็นเปรี้ยวนึกว่าหมักปลาร้า",
+    "ใครหน้าเด็กแต่ใจคุณป้า", "ใครหน้าแก่จนรุ่นน้องนึกว่าเป็นอาจารย์", "ใครคือสายมูตัวพ่อ/ตัวแม่ ไหว้ทุกที่ที่มีเลข", "ใครคือคนขี้งกที่สุดในสามโลก", "ใครคือคนที่เพื่อนยืมเงินแล้วต้องทำใจ",
+
+    // --- หมวดปั่นสาระ (Edutainment Fun) ---
+    "ใครฉลาดที่สุดแต่คุยกับมนุษย์ไม่รู้เรื่อง", "ใครคือคนที่น่าจะสอบติดหมอแต่เอาดีด้านติ๊กต็อก", "ใครคืออัจฉริยะที่ส่งงานเลทตลอดชาติ", "ใครคือคนที่เก่งภาษาอังกฤษแต่สำเนียงต่างดาว", "ใครคือคนที่น่าจะไปโกอินเตอร์คนแรกของรุ่น",
+    "ใครคือคนที่น่าจะรวยพันล้านแต่ใช้เงินไม่เป็น", "ใครคือคนที่น่าจะได้เป็นประธานบริษัทคนต่อไป", "ใครคือคนที่เก่งคอมระดับแฮกเกอร์ (แต่ใช้ทำเรื่องไร้สาระ)", "ใครคือคนที่ลายมือเหมือนถอดรหัสลับดาววินชี", "ใครคือคนที่น่าจะเป็นดาราเจ้าบทบาทที่สุด",
+
+    // --- หมวดไลฟ์สไตล์ปั่นๆ (Modern Life) ---
+    "จัดอันดับคนขี้ขิง ขิงเก่งขิงข่าขิงตะไคร้", "ใครคือเจ้าพ่อ/เจ้าแม่แคปชั่นเสี่ยว", "ใครคือคนที่ติดมือถือจนกาวติดมือ", "ใครคือคนที่ลงสตอรี่ไอจีวันละ 80 รอบ", "ใครคือคนที่ดองแชทเก่งจนแชทขึ้นรา",
+    "ใครคือคนที่น่าจะแต่งงานคนแรกในกลุ่ม", "ใครคือคนที่มีแฟนเงียบๆ แต่เปิดตัวทีช็อกทั้งห้อง", "ใครคือคนที่ขี้งอนระดับ 10 ริกเตอร์", "ใครคือคนที่พูดมากจนลิงยังขอลาพักร้อน", "ใครคือคนขี้ลืมจนเกือบจะลืมชื่อตัวเอง",
+    "ใครคือคนที่น่ารักนะแต่ห้ามพูด", "ใครคือคนที่ทรงอย่างแบดแต่ใจอย่างแบ๊ว", "ใครคือคนที่กินจุที่สุดจนร้านบุฟเฟต์ต้องติดรูปห้ามเข้า", "ใครคือคนที่แต่งตัวมาเรียนเหมือนมาเดินแฟชั่นโชว์", "ใครคือคนที่มีสไตล์การแต่งตัวล้ำยุคเกินไป",
+
+    // --- หมวดสุ่มเสี่ยงและตื่นเต้น (Risky & Fun) ---
+    "ใครคือคนที่น่าจะโดนตำรวจจับข้อหากวนประสาท", "ใครคือคนที่เพื่อนอยากแกล้งมากที่สุด", "ใครคือคนที่มีความลับเยอะที่สุดในห้อง", "ใครคือคนที่ชอบสปอยล์หนังแบบไม่ได้ขอ", "ใครคือคนที่มั่นใจแบบผิดๆ เสมอ",
+    "ใครคือคนที่ขี้กลัวเกินเหตุจนดูตลก", "ใครคือคนที่ใจเย็นจนนึกว่าพระมาโปรด", "ใครคือคนที่หน้าตึงตลอดเวลาเหมือนโกรธใครมา", "ใครคือคนที่ชอบทำตัวลึกลับน่าสงสัย", "ใครคือคนที่สดใสปลอมๆ แต่ข้างในคือนักล่า",
+    "ใครคือจอมเนียน แอบกินขนมเพื่อนตลอด", "ใครคือคนที่ชอบทวงบุญคุณบ่อยสุด", "ใครคือคนที่เป็นสนามอารมณ์ของเพื่อนสนิท", "ใครคือคนที่น่าจะไม่มีใครเอา", "ใครคือคนที่ติ่งดาราจนเสียสติ",
+
+    // --- หมวดสั้นๆ เข้าใจง่าย (Quick Tiers) ---
+    "คนตลกฝืดที่สุด", "คนขี้ตกใจที่สุด", "คนขี้อวดที่สุด", "คนสายเปย์เพื่อน", "คนสายเที่ยวไม่เรียน",
+    "คนซุ่มเรียนเงียบ", "คนขี้บ่นเหมือนแม่", "คนนกถาวร", "คนสายมโนตัวแม่", "คนหลงตัวเองสุด",
+    "คนรวยเงียบ", "คนขี้เหงาที่สุด", "คนโลกส่วนตัวสูง", "คนใจอ่อนง่าย", "คนปากแข็งสุด",
+    "คนสายปาร์ตี้", "คนรักสัตว์สุดๆ", "คนนอนน้ำลายยืด", "คนตื่นสายที่สุด", "คนตึงที่สุดของรุ่น",
+    "คนเก่งวิชาชีวิต", "คนขี้ตกใจเวอร์", "คนชอบเดินหลง", "คนขี้หนาวจัด", "คนขี้ร้อนจัด",
+    "คนชอบเต้นมั่ว", "คนร้องเพลงเพี้ยน", "คนกลัวผีขึ้นสมอง", "คนหน้าเดียวทั้งวัน", "คนที่เป็นที่สุดของ 6/1"
+];
 
         window.onload = () => {
             const pool = document.getElementById('pool');
             for(let i=1; i<=config.total; i++) {
                 let div = document.createElement('div');
-                div.className = `card ${i<=config.maleMax ? 'male' : 'female'}`;
-                div.id = `card-${i}`; div.style.backgroundImage = `url('${i}.jpg')`;
+                div.className = `card ${i<=12 ? 'male' : 'female'}`;
+                div.id = `card-${i}`;
+                div.style.backgroundImage = `url('${i}.jpg')`;
                 
                 div.draggable = true;
                 div.addEventListener('dragstart', (e) => { e.dataTransfer.setData("text", e.target.id); });
+                
                 div.addEventListener('touchstart', handleTouchStart, {passive: false});
                 div.addEventListener('touchmove', handleTouchMove, {passive: false});
                 div.addEventListener('touchend', handleTouchEnd);
                 
+                div.onclick = handleTap;
+
                 pool.appendChild(div);
             }
-            bindDesktopDropZones();
+            updateCount(); bindDesktopDropZones();
         };
 
-        // --- Drag Logic ---
+        // --- Custom Touch System (Mobile) ---
         function handleTouchStart(e) {
-            if(e.touches.length > 1) return; activeCard = this;
-            const t = e.touches[0]; const r = activeCard.getBoundingClientRect();
-            offsetX = t.clientX - r.left; offsetY = t.clientY - r.top;
+            if(e.touches.length > 1) return;
+            activeCard = this;
+            const touch = e.touches[0];
+            const rect = activeCard.getBoundingClientRect();
+            offsetX = touch.clientX - rect.left; offsetY = touch.clientY - rect.top;
+
             if(window.innerWidth < 1024 && activeCard.parentElement.id === 'pool') closeDrawer();
-            ghost = activeCard.cloneNode(true); ghost.classList.add('ghost-card');
-            ghost.style.left = r.left + 'px'; ghost.style.top = r.top + 'px';
-            document.body.appendChild(ghost); activeCard.style.opacity = '0.3';
-        }
-        function handleTouchMove(e) {
-            if(!activeCard || !ghost) return; e.preventDefault();
-            const t = e.touches[0]; ghost.style.left = (t.clientX - offsetX) + 'px'; ghost.style.top = (t.clientY - offsetY) + 'px';
-            const tr = document.getElementById('trash-bin'); const trr = tr.getBoundingClientRect();
-            if(t.clientX > trr.left && t.clientX < trr.right && t.clientY > trr.top && t.clientY < trr.bottom) tr.classList.add('drag-over');
-            else tr.classList.remove('drag-over');
-        }
-        function handleTouchEnd(e) {
-            if(!activeCard) return; const t = e.changedTouches[0];
-            ghost.remove(); activeCard.style.opacity = '1'; ghost.style.display = 'none';
-            const drop = document.elementFromPoint(t.clientX, t.clientY);
-            let zone = drop ? drop.closest('.tier-content, #pool, #trash-bin') : null;
-            document.getElementById('trash-bin').classList.remove('drag-over');
-            if(zone) {
-                if(zone.id === 'trash-bin') { activeCard.style.transform = "scale(0)"; setTimeout(() => activeCard.remove(), 300); }
-                else { zone.appendChild(activeCard); playBounce(activeCard); triggerEgg(activeCard); }
-            }
-            activeCard = null; ghost = null; if(window.syncScreen) window.syncScreen();
+
+            ghost = activeCard.cloneNode(true);
+            ghost.classList.add('ghost-card');
+            ghost.style.left = rect.left + 'px'; ghost.style.top = rect.top + 'px';
+            document.body.appendChild(ghost);
+
+            activeCard.style.opacity = '0.3'; document.body.style.overflow = 'hidden'; 
         }
 
+        function handleTouchMove(e) {
+            if(!activeCard || !ghost) return;
+            e.preventDefault(); 
+            const touch = e.touches[0];
+            ghost.style.left = (touch.clientX - offsetX) + 'px'; ghost.style.top = (touch.clientY - offsetY) + 'px';
+
+            const trash = document.getElementById('trash-bin');
+            const tr = trash.getBoundingClientRect();
+            if(touch.clientX > tr.left && touch.clientX < tr.right && touch.clientY > tr.top && touch.clientY < tr.bottom) {
+                trash.classList.add('drag-over');
+            } else { trash.classList.remove('drag-over'); }
+        }
+
+        function handleTouchEnd(e) {
+            if(!activeCard) return;
+            const touch = e.changedTouches[0];
+            ghost.remove(); activeCard.style.opacity = '1'; document.body.style.overflow = ''; 
+
+            ghost.style.display = 'none'; 
+            const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+            let zone = dropTarget ? dropTarget.closest('.tier-content, #pool, #trash-bin') : null;
+            document.getElementById('trash-bin').classList.remove('drag-over');
+
+            if(zone) {
+                if(zone.id === 'trash-bin') {
+                    activeCard.style.transform = "scale(0)"; setTimeout(() => activeCard.remove(), 300);
+                } else {
+                    zone.appendChild(activeCard);
+                    playBounce(activeCard);
+                    triggerEasterEgg(activeCard);
+                }
+            }
+            activeCard = null; ghost = null; updateCount(); if(window.syncScreen) window.syncScreen();
+        }
+
+        function handleTap() {
+            const isSelected = this.classList.contains('selected');
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+            if(!isSelected) { this.classList.add('selected'); setTimeout(()=>this.classList.remove('selected'), 300); }
+            
+            if(this.parentElement.id === 'pool') {
+                document.getElementById('tier-s').appendChild(this); playBounce(this); triggerEasterEgg(this);
+            } else { document.getElementById('pool').appendChild(this); }
+            updateCount(); if(window.syncScreen) window.syncScreen();
+        }
+
+        // --- Desktop Mouse System ---
         function bindDesktopDropZones() {
             document.querySelectorAll('.tier-content, #pool, #trash-bin').forEach(zone => {
-                zone.ondragover = e => e.preventDefault();
+                zone.ondragover = e => { e.preventDefault(); if(zone.id === 'trash-bin') zone.classList.add('drag-over'); };
+                zone.ondragleave = e => { if(zone.id === 'trash-bin') zone.classList.remove('drag-over'); };
                 zone.ondrop = e => {
-                    e.preventDefault(); const id = e.dataTransfer.getData("text"); const card = document.getElementById(id);
+                    e.preventDefault(); zone.classList.remove('drag-over');
+                    const card = document.getElementById(e.dataTransfer.getData("text"));
                     if(!card) return;
-                    if(zone.id === 'trash-bin') { card.style.transform = "scale(0)"; setTimeout(() => card.remove(), 300); }
-                    else { zone.appendChild(card); playBounce(card); triggerEgg(card); }
-                    if(window.syncScreen) window.syncScreen();
+
+                    if(zone.id === 'trash-bin') { 
+                        card.style.transform = "scale(0)"; setTimeout(() => card.remove(), 300);
+                    } else { 
+                        zone.appendChild(card); playBounce(card); triggerEasterEgg(card);
+                    }
+                    updateCount(); if(window.syncScreen) window.syncScreen();
                 };
             });
         }
 
-        // --- Systems ---
-        function triggerEgg(card) {
-            if(eggs[card.id]) {
-                const r = card.getBoundingClientRect();
-                const s = document.createElement('span'); s.className = 'float-text'; s.innerText = eggs[card.id];
-                s.style.left = r.left+'px'; s.style.top = r.top+'px';
-                document.body.appendChild(s); setTimeout(()=>s.remove(),2500);
-            }
-        }
         function playBounce(card) { card.classList.remove('bouncy'); void card.offsetWidth; card.classList.add('bouncy'); }
         
-        let taps = []; let tapTimer;
-        window.registerTap = (side) => {
-            taps.push(side); clearTimeout(tapTimer); tapTimer = setTimeout(() => { taps = []; }, 2000);
-            if (taps.slice(-3).join('') === 'RRL') { document.getElementById('modal-admin-auth').classList.add('active'); taps=[]; }
-        };
+        function triggerEasterEgg(card) {
+            if(eggs[card.id]) {
+                const r = card.getBoundingClientRect();
+                spawnText(r.left + 20, r.top, eggs[card.id]);
+            }
+        }
+        function spawnText(x, y, text) { const s = document.createElement('span'); s.className = 'float-text'; s.innerText = text; s.style.left = x+'px'; s.style.top = y+'px'; document.body.appendChild(s); setTimeout(()=>s.remove(),2500); }
 
-        function editTierName(el) { const n = prompt("เปลี่ยนชื่อเทียร์:", el.innerText); if(n) { el.innerText = n; window.syncScreen(); } }
-        function addNewTier() {
-            const r = document.createElement('div'); r.className = 'tier-row';
-            r.innerHTML = `<div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank new-tier" ondblclick="editTierName(this)">ใหม่</div><div class="tier-content"></div>`;
-            document.getElementById('tier-stack').appendChild(r); bindDesktopDropZones(); window.syncScreen();
-        }
-        function handleRemoveTier(btn) { if(confirm("ลบแถวนี้?")) { btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); btn.parentElement.remove(); window.syncScreen(); } }
-        function checkPin() { if(document.getElementById('inp-pin').value === '0909') { closeModal('modal-admin-auth'); document.getElementById('admin-panel').classList.add('active'); if(window.startAdminMonitor) window.startAdminMonitor(); } else alert('Wrong!'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        // --- Admin & Utils ---
+        let taps = []; let tapTimer;
+        window.registerTap = (side) => { taps.push(side); clearTimeout(tapTimer); tapTimer = setTimeout(() => { taps = []; }, 2000); if (taps.slice(-3).join('') === 'RRL') { document.getElementById('modal-admin-auth').classList.add('active'); taps=[]; } };
+        function checkPin() { if(document.getElementById('inp-pin').value === '0909') { closeModal('modal-admin-auth'); document.getElementById('admin-panel').classList.add('active'); if(window.startAdminMonitor) window.startAdminMonitor(); } else { alert('รหัสผิดพลาด!'); } }
         function closeAdminPanel() { document.getElementById('admin-panel').classList.remove('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openInputModal() { document.getElementById('modal-input').classList.add('active'); }
-        function confirmAddQ() { const v = document.getElementById('inp-q').value; if(v) { document.getElementById('q-text').innerText = v; window.syncScreen(); } closeModal('modal-input'); }
-        function handleReset() { if(confirm("ล้างกระดาน?")) { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); window.syncScreen(); } }
-        function spin() { let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15) { clearInterval(t); window.syncScreen(); } }, 60); }
+        function openConfirmModal(t, d, cb) { document.getElementById('confirm-title').innerText = t; document.getElementById('confirm-desc').innerText = d; document.getElementById('btn-confirm-yes').onclick = () => { cb(); closeModal('modal-confirm'); }; document.getElementById('modal-confirm').classList.add('active'); }
+        function confirmAddQ() { const v = document.getElementById('inp-q').value; if(v) { questions.push(v); document.getElementById('q-text').innerText = v; if(window.syncScreen) window.syncScreen(); } closeModal('modal-input'); document.getElementById('inp-q').value = ''; }
+        function handleReset() { openConfirmModal("ล้างกระดาน?", "รูปทั้งหมดจะกลับเข้ากล่อง", () => { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); updateCount(); if(window.syncScreen) window.syncScreen(); }); }
+        function handleRemoveTier(btn) { openConfirmModal("ลบแถวนี้?", "รูปลงกล่อง แถวหายไป", () => { btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); btn.parentElement.remove(); updateCount(); if(window.syncScreen) window.syncScreen(); }); }
+        function spin() { let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15) { clearInterval(t); if(window.syncScreen) window.syncScreen(); } }, 60); }
         
-        function saveImg() {
-            const b1 = document.querySelector('.btn-save-float'); const b2 = document.querySelector('.trash-float');
-            b1.style.visibility = 'hidden'; b2.style.visibility = 'hidden'; window.scrollTo(0,0);
-            html2canvas(document.getElementById('capture-zone'),{backgroundColor:'#f1f5f9',useCORS:true,scale:2,scrollY:-window.scrollY}).then(c=>{
-                const a=document.createElement('a'); a.download='tier.png'; a.href=c.toDataURL(); a.click();
-                b1.style.visibility = 'visible'; b2.style.visibility = 'visible';
-            });
+        // --- 📸 แก้บั๊กเซฟภาพบนมือถือ ---
+        function saveImg() { 
+            const btnAdd = document.querySelector('.add-tier-btn'); const btnsDel = document.querySelectorAll('.tier-del-btn');
+            if(btnAdd) btnAdd.style.display = 'none'; btnsDel.forEach(b => b.style.display = 'none');
+            
+            // รีเซ็ตการ Scroll เพื่อไม่ให้ภาพแหว่ง
+            window.scrollTo(0, 0); 
+            
+            html2canvas(document.getElementById('capture-zone'), {
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                scale: 2,
+                scrollY: -window.scrollY // บังคับให้จับภาพจากจุดเริ่มต้นเสมอ
+            }).then(c => { 
+                const a=document.createElement('a'); a.download='tier-list.png'; a.href=c.toDataURL(); a.click(); 
+                if(btnAdd) btnAdd.style.display = 'block'; btnsDel.forEach(b => b.style.display = 'flex');
+            }).catch(err => {
+                alert("บันทึกภาพไม่สำเร็จ กรุณาลองเปิดผ่านเว็บบราวเซอร์ (Chrome/Safari)");
+                if(btnAdd) btnAdd.style.display = 'block'; btnsDel.forEach(b => b.style.display = 'flex');
+            }); 
         }
+
         function toggleDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.toggle('open'); }
         function closeDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.remove('open'); }
+        function updateCount() { document.getElementById('count').innerText = document.getElementById('pool').children.length; }
     </script>
 </body>
 </html>
