@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tier List - 6/1 Ultimate</title>
+    <title>Tier List 6/1 - Complete System</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -22,22 +22,22 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; outline: none; margin: 0; padding: 0; }
         body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Kanit', sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* --- 🌟 Animations --- */
+        /* --- Animations --- */
         @keyframes bounceDrop { 0% { transform: scale(1); } 50% { transform: scale(1.15) rotate(5deg); } 70% { transform: scale(0.95) rotate(-5deg); } 100% { transform: scale(1) rotate(0); } }
         .bouncy { animation: bounceDrop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        /* --- Secret Triggers --- */
+        /* --- Secret Triggers (ยึดมุมบน) --- */
         .secret-trigger { position: fixed; top: 0; width: 80px; height: 80px; z-index: 9999; }
         #trigger-left { left: 0; } #trigger-right { right: 0; }
 
-        /* --- 📡 ADMIN PANEL --- */
+        /* --- 📡 PRO ADMIN PANEL (Live Mirror) --- */
         #admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); color: #e2e8f0; z-index: 10000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
         #admin-panel.active { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .admin-header { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.2); }
         .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .mirror-card { background: #1e293b; border-radius: 15px; padding: 15px; border: 2px solid #334155; transition: 0.3s; }
-        .mc-topic { text-align: center; color: #fbbf24; font-weight: 700; margin-bottom: 15px; font-size: 1rem; }
+        .mirror-card { background: #1e293b; border-radius: 15px; padding: 15px; border: 2px solid #334155; }
+        .mc-topic { text-align: center; color: #fbbf24; font-weight: 700; margin-bottom: 10px; font-size: 0.9rem; background: rgba(251,191,36,0.1); padding: 5px; border-radius: 8px; }
         .mini-tier { display: flex; background: #0f172a; border-radius: 8px; overflow: hidden; margin-bottom: 5px; min-height: 40px;}
         .mini-rank { width: 50px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.7rem; color: rgba(0,0,0,0.7); }
         .mini-content { flex-grow: 1; padding: 5px; display: flex; flex-wrap: wrap; gap: 4px; }
@@ -46,11 +46,11 @@
         /* --- Modals --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 11000; display: none; justify-content: center; align-items: center; }
         .modal-overlay.active { display: flex; }
-        .modal-box { background: white; width: 90%; max-width: 320px; border-radius: 25px; padding: 25px; text-align: center; }
+        .modal-box { background: white; width: 90%; max-width: 320px; border-radius: 25px; padding: 25px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
         .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; margin: 15px 0; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; }
-        .btn-modal { padding: 12px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; flex: 1; font-family: 'Kanit'; font-size: 1rem; }
+        .btn-modal { padding: 12px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; flex: 1; font-family: 'Kanit'; }
 
-        /* --- Floating Buttons --- */
+        /* --- Floating UI --- */
         .btn-save-float { position: fixed; bottom: 165px; right: 20px; width: 55px; height: 55px; border-radius: 50%; background: #10b981; color: white; border: none; font-size: 1.5rem; z-index: 2000; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; }
         .trash-float { position: fixed; bottom: 95px; right: 20px; width: 65px; height: 65px; border-radius: 50%; background: var(--trash-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; z-index: 2000; border: 3px solid white; box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); transition: 0.3s; }
         .trash-float.drag-over { transform: scale(1.3) rotate(15deg); background: #b91c1c; }
@@ -63,38 +63,28 @@
         #q-text { font-size: 1.2rem; font-weight: 800; color: var(--accent); min-height: 35px; margin-bottom: 10px; }
         .btn-icon { width: 45px; height: 45px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        /* --- Tier List Rows --- */
+        /* --- Tier Rows (Fix Shrink) --- */
         .tier-container { width: 100%; display: flex; flex-direction: column; gap: 8px; }
         .tier-row { display: flex; background: #f1f5f9; border-radius: 14px; overflow: hidden; min-height: 80px; position: relative; border: 2px solid #e2e8f0; }
         .tier-del-btn { position: absolute; left: 4px; top: 4px; width: 20px; height: 20px; background: rgba(0,0,0,0.3); color: white; border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: bold; }
-        
-        /* FIX: ล็อกชื่อหัวข้อไม่ให้หดตัว */
-        .tier-rank { 
-            width: 70px; flex-shrink: 0; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 1.1rem; font-weight: 800; color: rgba(0,0,0,0.7); text-align: center; 
-        }
+        .tier-rank { width: 70px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: rgba(0,0,0,0.7); text-align: center; }
         .tier-content { flex-grow: 1; padding: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; min-height: 80px; }
         
         .s { background: #fca5a5; } .a { background: #fdba74; } .b { background: #fde047; } .c { background: #86efac; } .d { background: #93c5fd; }
 
         /* --- Friend Card --- */
         .card {
-            width: 50px; height: 50px; background-size: cover; background-position: center;
-            border-radius: 12px; cursor: grab; background-color: #cbd5e1;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15); flex-shrink: 0;
-            touch-action: none; user-select: none;
+            width: 50px; height: 50px; background-size: cover; background-position: center; border-radius: 12px; cursor: grab; background-color: #cbd5e1;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15); flex-shrink: 0; touch-action: none; user-select: none;
             transition: width 0.3s, height 0.3s, transform 0.2s;
         }
-        /* รูปขยายเมื่ออยู่ในเทียร์ */
-        .tier-content .card { width: 65px; height: 65px; }
-
+        .tier-content .card { width: 60px; height: 60px; }
         .card.male { border: 2px solid #38bdf8; } .card.female { border: 2px solid #f472b6; }
         .ghost-card { position: fixed; pointer-events: none; z-index: 99999; opacity: 0.9; transform: scale(1.1) rotate(5deg); width: 60px; height: 60px; border-radius: 12px; background-size: cover; background-position: center; }
 
         /* Easter Egg */
-        .float-text { position: absolute; color: #fbbf24; font-weight: 800; font-size: 1.6rem; text-shadow: 2px 2px 0 #000; pointer-events: none; z-index: 9999; white-space: nowrap; animation: floatThenSpin 2.5s ease-in-out forwards; }
-        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -50px) scale(1.1); } 100% { opacity: 0; transform: translate(200px, -300px) scale(0.2) rotate(1080deg); } }
+        .float-text { position: absolute; color: #fbbf24; font-weight: 800; font-size: 1.5rem; text-shadow: 2px 2px 0 #000; pointer-events: none; z-index: 9999; white-space: nowrap; animation: floatThenSpin 2.5s ease-in-out forwards; }
+        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -40px) scale(1.1); } 100% { opacity: 0; transform: translate(200px, -300px) scale(0.2) rotate(1080deg); } }
 
         /* --- Drawer --- */
         .inventory-drawer { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); border-radius: 25px 25px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.15); z-index: 990; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(calc(100% - 45px)); display: flex; flex-direction: column; height: 35vh; min-height: 220px; border-top: 2px solid white; }
@@ -106,12 +96,10 @@
         @media (min-width: 1024px) {
             body { flex-direction: row; }
             .main-wrapper { width: calc(100% - var(--drawer-width)); padding: 40px; margin-right: var(--drawer-width); height: 100vh; overflow-y: auto; }
-            .inventory-drawer { position: fixed; top: 0; right: 0; bottom: 0; left: auto; width: var(--drawer-width); height: 100vh; transform: none !important; border-radius: 0; border-left: 2px solid #e2e8f0; }
+            .inventory-drawer { position: fixed; top: 0; right: 0; bottom: 0; left: auto; width: var(--drawer-width); height: 100vh; transform: none !important; border-radius: 0; border-left: 1px solid #e2e8f0; }
             .drawer-header { pointer-events: none; } .drawer-handle { display: none; }
-            .btn-save-float { right: calc(var(--drawer-width) + 20px); bottom: 120px; } 
-            .trash-float { right: calc(var(--drawer-width) + 20px); bottom: 30px; }
-            .card { width: 65px; height: 65px; }
-            .tier-content .card { width: 80px; height: 80px; }
+            .btn-save-float { right: calc(var(--drawer-width) + 20px); bottom: 120px; } .trash-float { right: calc(var(--drawer-width) + 20px); bottom: 30px; }
+            .card { width: 65px; height: 65px; } .tier-content .card { width: 80px; height: 80px; }
         }
     </style>
 </head>
@@ -122,9 +110,9 @@
 
     <div id="admin-panel">
         <div class="admin-header">
-            <h2>📡 LIVE FEED</h2>
-            <div style="display:flex; gap:15px; align-items:center;">
-                <span id="online-count" style="background:var(--accent); color:white; padding:5px 12px; border-radius:20px; font-weight:bold; font-size:0.8rem;">0 On</span>
+            <h2>📡 LIVE MONITOR</h2>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <span id="online-count" style="background:#10b981; color:white; padding:5px 12px; border-radius:20px; font-weight:bold; font-size:0.8rem;">0 On</span>
                 <button onclick="closeAdminPanel()" style="background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:10px; cursor:pointer;">ปิด</button>
             </div>
         </div>
@@ -133,8 +121,8 @@
 
     <div id="modal-admin-auth" class="modal-overlay">
         <div class="modal-box">
-            <h3>🔐 แอดมิน</h3>
-            <input id="inp-pin" type="tel" class="modal-input" placeholder="****" maxlength="4">
+            <h3>🔐 รหัสผู้ดูแล</h3>
+            <input id="inp-pin" type="tel" class="modal-input" placeholder="****" maxlength="4" style="letter-spacing:10px; font-weight:900;">
             <div style="display:flex; gap:10px;">
                 <button class="btn-modal" style="background:#f1f5f9;" onclick="closeModal('modal-admin-auth')">ยกเลิก</button>
                 <button class="btn-modal" style="background:var(--accent); color:white;" onclick="checkPin()">ยืนยัน</button>
@@ -149,19 +137,20 @@
         <div class="capture-wrapper" id="capture-zone">
             <h1>✨ TIER LIST 6/1 ✨</h1>
             <div class="control-panel">
-                <div id="q-text">กดสุ่มหัวข้อเลย!</div>
+                <div id="q-text">สุ่มคำถามจัดเทียร์!</div>
                 <div style="display:flex; justify-content:center; gap:15px;" data-html2canvas-ignore="true">
                     <button class="btn-icon" style="background:var(--accent); color:white;" onclick="spin()">🎲</button>
+                    <button class="btn-icon" style="background:#10b981; color:white;" onclick="openInputModal()">➕</button>
                     <button class="btn-icon" style="background:#ef4444; color:white;" onclick="handleReset()">🔄</button>
                 </div>
             </div>
 
             <div class="tier-container" id="tier-stack">
-                <div class="tier-row"><div class="tier-rank s">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
-                <div class="tier-row"><div class="tier-rank a">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
-                <div class="tier-row"><div class="tier-rank b">โหด</div><div class="tier-content" id="tier-b"></div></div>
-                <div class="tier-row"><div class="tier-rank c">เฉยๆ</div><div class="tier-content" id="tier-c"></div></div>
-                <div class="tier-row"><div class="tier-rank d">พัก</div><div class="tier-content" id="tier-d"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank s">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank a">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank b">โหด</div><div class="tier-content" id="tier-b"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank c">เฉยๆ</div><div class="tier-content" id="tier-c"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank d">พัก</div><div class="tier-content" id="tier-d"></div></div>
             </div>
         </div>
     </div>
@@ -169,6 +158,14 @@
     <div class="inventory-drawer" id="drawer">
         <div class="drawer-header" onclick="toggleDrawer()"><div class="drawer-handle"></div></div>
         <div class="drawer-content" id="pool"></div>
+    </div>
+
+    <div id="modal-input" class="modal-overlay">
+        <div class="modal-box">
+            <h3>✏️ ตั้งคำถาม</h3>
+            <input id="inp-q" class="modal-input" placeholder="...">
+            <button class="btn-modal" style="background:var(--accent); color:white; width:100%;" onclick="confirmAddQ()">เพิ่มเลย</button>
+        </div>
     </div>
 
     <script type="module">
@@ -204,13 +201,13 @@
                     const card = document.createElement('div');
                     card.className = 'mirror-card';
                     card.innerHTML = `
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="color:#38bdf8; font-weight:bold;">👤 ${uid}</span></div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="color:#38bdf8; font-weight:bold;">👤 ${uid}</span></div>
                         <div class="mc-topic">📝 ${u.q}</div>
-                        <div class="mini-tier"><div class="mini-rank s" style="background:#fca5a5">ที่สุด</div><div class="mini-content">${buildImgs(u.s)}</div></div>
-                        <div class="mini-tier"><div class="mini-rank a" style="background:#fdba74">ตัวตึง</div><div class="mini-content">${buildImgs(u.a)}</div></div>
-                        <div class="mini-tier"><div class="mini-rank b" style="background:#fde047">โหด</div><div class="mini-content">${buildImgs(u.b)}</div></div>
-                        <div class="mini-tier"><div class="mini-rank c" style="background:#86efac">เฉยๆ</div><div class="mini-content">${buildImgs(u.c)}</div></div>
-                        <div class="mini-tier"><div class="mini-rank d" style="background:#93c5fd">พัก</div><div class="mini-content">${buildImgs(u.d)}</div></div>
+                        <div class="mini-tier"><div class="mini-rank" style="background:#fca5a5">ที่สุด</div><div class="mini-content">${buildImgs(u.s)}</div></div>
+                        <div class="mini-tier"><div class="mini-rank" style="background:#fdba74">ตัวตึง</div><div class="mini-content">${buildImgs(u.a)}</div></div>
+                        <div class="mini-tier"><div class="mini-rank" style="background:#fde047">โหด</div><div class="mini-content">${buildImgs(u.b)}</div></div>
+                        <div class="mini-tier"><div class="mini-rank" style="background:#86efac">เฉยๆ</div><div class="mini-content">${buildImgs(u.c)}</div></div>
+                        <div class="mini-tier"><div class="mini-rank" style="background:#93c5fd">พัก</div><div class="mini-content">${buildImgs(u.d)}</div></div>
                     `;
                     grid.appendChild(card);
                 });
@@ -219,10 +216,10 @@
     </script>
 
     <script>
-        let activeCard = null; let ghost = null; let offsetX = 0, offsetY = 0;
         const config = { total: 28, maleMax: 12 };
         const eggs = { "card-6": "รุ่นใหญ่", "card-3": "เอกชัย", "card-8": "จารโป๊ะ", "card-21": "ข้าวมันไก่", "card-22": "จารบิ๊ก", "card-26": "หมางอย", "card-28": "สพต" };
-        let questions = ["ใครเรียนเก่งที่สุด", "ใครปากเหม็นที่สุด", "ใครสายเปย์ที่สุด", "ใครสายฮา", "จัดอันดับคนตึง"];
+        let questions = ["จัดอันดับคนปากเหม็น", "จัดอันดับคนน่ารัก", "ใครเรียนเก่งที่สุด", "ใครสายเปย์ที่สุด", "ใครสายฮาที่สุด"];
+        let activeCard = null; let ghost = null; let offsetX = 0, offsetY = 0;
 
         window.onload = () => {
             const pool = document.getElementById('pool');
@@ -231,16 +228,11 @@
                 div.className = `card ${i<=12 ? 'male' : 'female'}`;
                 div.id = `card-${i}`;
                 div.style.backgroundImage = `url('${i}.jpg')`;
-                
-                // Desktop Drag
                 div.draggable = true;
                 div.addEventListener('dragstart', (e) => { e.dataTransfer.setData("text", e.target.id); });
-                
-                // Mobile Touch
                 div.addEventListener('touchstart', handleTouchStart, {passive: false});
                 div.addEventListener('touchmove', handleTouchMove, {passive: false});
                 div.addEventListener('touchend', handleTouchEnd);
-                
                 pool.appendChild(div);
             }
             bindDesktopDropZones();
@@ -252,10 +244,7 @@
             const touch = e.touches[0];
             const rect = activeCard.getBoundingClientRect();
             offsetX = touch.clientX - rect.left; offsetY = touch.clientY - rect.top;
-
-            // หยิบปุ๊บ ปิดกล่องปั๊บ (มือถือ)
             if(window.innerWidth < 1024 && activeCard.parentElement.id === 'pool') closeDrawer();
-
             ghost = activeCard.cloneNode(true);
             ghost.classList.add('ghost-card');
             ghost.style.left = rect.left + 'px'; ghost.style.top = rect.top + 'px';
@@ -283,7 +272,6 @@
             const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
             let zone = dropTarget ? dropTarget.closest('.tier-content, #pool, #trash-bin') : null;
             document.getElementById('trash-bin').classList.remove('drag-over');
-
             if(zone) {
                 if(zone.id === 'trash-bin') { activeCard.style.transform = "scale(0)"; setTimeout(() => activeCard.remove(), 300); }
                 else { zone.appendChild(activeCard); playBounce(activeCard); triggerEgg(activeCard); }
@@ -313,7 +301,6 @@
                 document.body.appendChild(s); setTimeout(()=>s.remove(),2000);
             }
         }
-
         function playBounce(card) { card.classList.remove('bouncy'); void card.offsetWidth; card.classList.add('bouncy'); }
 
         let taps = []; let tapTimer;
@@ -325,14 +312,19 @@
         function checkPin() { if(document.getElementById('inp-pin').value === '0909') { closeModal('modal-admin-auth'); document.getElementById('admin-panel').classList.add('active'); if(window.startAdminMonitor) window.startAdminMonitor(); } else alert('ผิด!'); }
         function closeAdminPanel() { document.getElementById('admin-panel').classList.remove('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function handleReset() { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); if(window.syncScreen) window.syncScreen(); }
-        function spin() { let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15) { clearInterval(t); if(window.syncScreen) window.syncScreen(); } }, 60); }
+        function openInputModal() { document.getElementById('modal-input').classList.add('active'); }
+        function confirmAddQ() { const v = document.getElementById('inp-q').value; if(v) { document.getElementById('q-text').innerText = v; window.syncScreen(); } closeModal('modal-input'); }
+        function handleReset() { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); window.syncScreen(); }
+        function handleRemoveTier(btn) { btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); btn.parentElement.remove(); window.syncScreen(); }
+        function spin() { let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15) { clearInterval(t); window.syncScreen(); } }, 60); }
         function saveImg() { 
-            const b1 = document.querySelector('.btn-save-float'); const b2 = document.querySelector('.trash-float');
-            b1.style.display = 'none'; b2.style.display = 'none'; window.scrollTo(0,0);
+            document.querySelector('.btn-save-float').style.display = 'none';
+            document.querySelector('.trash-float').style.display = 'none';
+            window.scrollTo(0,0);
             html2canvas(document.getElementById('capture-zone'),{backgroundColor:'#f1f5f9',useCORS:true,scale:2,scrollY:-window.scrollY}).then(c=>{
                 const a=document.createElement('a'); a.download='tier.png'; a.href=c.toDataURL(); a.click();
-                b1.style.display = 'flex'; b2.style.display = 'flex';
+                document.querySelector('.btn-save-float').style.display = 'flex';
+                document.querySelector('.trash-float').style.display = 'flex';
             });
         }
         function toggleDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.toggle('open'); }
