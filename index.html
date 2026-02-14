@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tier List - Perfect UI Scale</title>
+    <title>Tier List - Perfect UI & Fixes</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
 
     <style>
         :root {
@@ -25,7 +26,7 @@
         @keyframes bounceDrop { 0% { transform: scale(1); } 50% { transform: scale(1.15) rotate(5deg); } 70% { transform: scale(0.95) rotate(-5deg); } 100% { transform: scale(1) rotate(0); } }
         .bouncy { animation: bounceDrop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        /* --- Secret Triggers --- */
+        /* --- Secret Triggers (ยึดมุมบนสุด) --- */
         .secret-trigger { position: fixed; top: 0; width: 80px; height: 80px; z-index: 9999; }
         #trigger-left { left: 0; } #trigger-right { right: 0; }
 
@@ -53,9 +54,27 @@
         .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; margin: 15px 0; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; }
         .btn-modal { padding: 12px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; flex: 1; font-family: 'Kanit'; font-size: 1rem; transition: 0.2s; }
 
-        /* --- Floating Buttons --- */
-        .btn-save-float { position: fixed; top: 15px; right: 15px; width: 55px; height: 55px; border-radius: 50%; background: #10b981; color: white; border: none; font-size: 1.5rem; z-index: 2000; cursor: pointer; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center;}
-        .trash-float { position: fixed; bottom: 80px; right: 15px; width: 65px; height: 65px; border-radius: 50%; background: var(--trash-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; z-index: 2000; border: 3px solid white; box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); transition: 0.3s; }
+        /* --- Floating Buttons (ย้ายปุ่มกล้องมาอยู่ล่างขวา) --- */
+        .btn-save-float { 
+            position: fixed; 
+            bottom: 160px; /* เหนือถังขยะ */
+            right: 15px; 
+            width: 55px; height: 55px; 
+            border-radius: 50%; background: #10b981; color: white; border: none; 
+            font-size: 1.5rem; z-index: 2000; cursor: pointer; 
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); 
+            display: flex; align-items: center; justify-content: center;
+        }
+        .trash-float { 
+            position: fixed; 
+            bottom: 90px; 
+            right: 15px; 
+            width: 65px; height: 65px; 
+            border-radius: 50%; background: var(--trash-color); color: white; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1.8rem; z-index: 2000; border: 3px solid white; 
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); transition: 0.3s; 
+        }
         .trash-float.drag-over { transform: scale(1.3) rotate(15deg); background: #b91c1c; }
 
         /* --- Main App UI --- */
@@ -69,22 +88,27 @@
         .btn-icon:active { transform: scale(0.9); }
         .btn-primary { background: var(--accent); color: white; } 
 
-        /* --- ✨ Tier List UI (ปรับลดขนาดมือถือ ให้เรียงสวยๆ) ✨ --- */
+        /* --- ✨ Tier List UI (แก้ไขปัญหาชื่อเทียร์หด) ✨ --- */
         .tier-container { width: 100%; display: flex; flex-direction: column; gap: 8px; }
         .tier-row { display: flex; background: #f1f5f9; border-radius: 14px; overflow: hidden; min-height: 70px; position: relative; border: 2px solid #e2e8f0; }
         .tier-del-btn { position: absolute; left: 4px; top: 4px; width: 20px; height: 20px; background: rgba(0,0,0,0.3); color: white; border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-weight: bold; }
         
-        /* ย่อหัวข้อลงนิดนึง */
-        .tier-rank { width: 60px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: rgba(0,0,0,0.7); text-shadow: 1px 1px 0 rgba(255,255,255,0.4); text-align: center; }
+        /* THE FIX: เพิ่ม flex-shrink: 0 เพื่อกันหัวข้อหดตัว */
+        .tier-rank { 
+            width: 60px; 
+            flex-shrink: 0; /* ล็อกขนาด ห้ามเบราว์เซอร์บีบ! */
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1rem; font-weight: 800; color: rgba(0,0,0,0.7); 
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.4); text-align: center; 
+        }
         
-        /* ลดช่องว่าง (gap) ระหว่างรูป เพื่อให้วางได้หลายรูป */
         .tier-content { flex-grow: 1; padding: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; min-height: 70px; transition: background 0.2s; }
         
         .s { background: #fca5a5; } .a { background: #fdba74; } .b { background: #fde047; } .c { background: #86efac; } .d { background: #93c5fd; } .new { background: #cbd5e1; }
 
         /* --- Friend Card --- */
         .card {
-            width: 50px; height: 50px; /* ขนาดตอนอยู่ในกล่อง */
+            width: 50px; height: 50px; 
             background-size: cover; background-position: center;
             border-radius: 12px; cursor: grab; background-color: #cbd5e1;
             box-shadow: 0 4px 6px rgba(0,0,0,0.15); flex-shrink: 0;
@@ -92,12 +116,7 @@
             transition: width 0.2s, height 0.2s, transform 0.2s;
         }
         
-        /* ✨ ขนาดตอนลากเข้าไปวางในเทียร์ (มือถือ 55px กำลังสวย ใส่ได้ 5-6 คน ไม่ล้น) ✨ */
-        .tier-content .card {
-            width: 55px; height: 55px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
+        .tier-content .card { width: 55px; height: 55px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .card.male { border: 2px solid #38bdf8; } .card.female { border: 2px solid #f472b6; }
         
         .ghost-card { position: fixed; pointer-events: none; z-index: 99999; opacity: 0.9; transform: scale(1.1) rotate(5deg); box-shadow: 0 15px 30px rgba(0,0,0,0.4); width: 60px; height: 60px; border-radius: 12px; background-size: cover; background-position: center; }
@@ -120,7 +139,7 @@
         .drawer-handle { width: 50px; height: 5px; background: #cbd5e1; border-radius: 10px; margin-right: 10px; }
         .drawer-content { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 
-        /* ✨ Desktop Mode (ขยายใหญ่สะใจเฉพาะในคอม) ✨ */
+        /* --- Desktop Mode --- */
         @media (min-width: 1024px) {
             body { flex-direction: row; background: var(--bg-body); }
             .main-wrapper { width: calc(100% - var(--drawer-width)); padding: 40px; margin-right: var(--drawer-width); height: 100vh; overflow-y: auto; }
@@ -130,10 +149,13 @@
             .tier-content { padding: 10px; gap: 10px; }
             .inventory-drawer { position: fixed; top: 0; right: 0; bottom: 0; left: auto; width: var(--drawer-width); height: 100vh; transform: none !important; border-radius: 0; border-left: 2px solid #e2e8f0; }
             .drawer-header { pointer-events: none; } .drawer-handle { display: none; }
-            .btn-save-float { right: calc(var(--drawer-width) + 20px); } .trash-float { right: calc(var(--drawer-width) + 20px); bottom: 30px; }
+            
+            /* ในคอมปุ่มขยับหลบลิ้นชักปกติ */
+            .btn-save-float { right: calc(var(--drawer-width) + 20px); bottom: 120px; } 
+            .trash-float { right: calc(var(--drawer-width) + 20px); bottom: 30px; }
             
             .card { width: 70px; height: 70px; }
-            .tier-content .card { width: 80px; height: 80px; } /* ในคอมขยายใหญ่ได้เพราะที่เยอะ */
+            .tier-content .card { width: 80px; height: 80px; } 
         }
     </style>
 </head>
@@ -160,8 +182,8 @@
             <h3 style="margin:0; color:#1e293b;">🔐 รหัสผ่าน (0909)</h3>
             <input id="inp-pin" type="tel" class="modal-input" placeholder="* * * *" maxlength="4" style="letter-spacing: 10px; font-weight:900;">
             <div style="display:flex; gap:10px;">
-                <button class="btn-modal btn-cancel" style="background:#f1f5f9; color:#64748b;" onclick="closeModal('modal-admin-auth')">ยกเลิก</button>
-                <button class="btn-modal btn-confirm" style="background:var(--accent); color:white;" onclick="checkPin()">เข้าสู่ระบบ</button>
+                <button class="btn-modal" style="background:#f1f5f9; color:#64748b;" onclick="closeModal('modal-admin-auth')">ยกเลิก</button>
+                <button class="btn-modal" style="background:var(--accent); color:white;" onclick="checkPin()">เข้าสู่ระบบ</button>
             </div>
         </div>
     </div>
@@ -357,7 +379,6 @@
             activeCard = null; ghost = null; updateCount(); if(window.syncScreen) window.syncScreen();
         }
 
-        // Tap to move (Backup for mobile)
         function handleTap() {
             const isSelected = this.classList.contains('selected');
             document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
@@ -365,9 +386,7 @@
             
             if(this.parentElement.id === 'pool') {
                 document.getElementById('tier-s').appendChild(this); playBounce(this); triggerEasterEgg(this);
-            } else {
-                document.getElementById('pool').appendChild(this);
-            }
+            } else { document.getElementById('pool').appendChild(this); }
             updateCount(); if(window.syncScreen) window.syncScreen();
         }
 
@@ -413,7 +432,29 @@
         function handleReset() { openConfirmModal("ล้างกระดาน?", "รูปทั้งหมดจะกลับเข้ากล่อง", () => { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); updateCount(); if(window.syncScreen) window.syncScreen(); }); }
         function handleRemoveTier(btn) { openConfirmModal("ลบแถวนี้?", "รูปลงกล่อง แถวหายไป", () => { btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); btn.parentElement.remove(); updateCount(); if(window.syncScreen) window.syncScreen(); }); }
         function spin() { let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15) { clearInterval(t); if(window.syncScreen) window.syncScreen(); } }, 60); }
-        function saveImg() { const btnAdd = document.querySelector('.add-tier-btn'); const btnsDel = document.querySelectorAll('.tier-del-btn'); if(btnAdd) btnAdd.style.display = 'none'; btnsDel.forEach(b => b.style.display = 'none'); html2canvas(document.getElementById('capture-zone'),{backgroundColor:'#f1f5f9',useCORS:true,scale:2}).then(c=>{ const a=document.createElement('a'); a.download='tier-list.png'; a.href=c.toDataURL(); a.click(); if(btnAdd) btnAdd.style.display = 'block'; btnsDel.forEach(b => b.style.display = 'flex'); }); }
+        
+        // --- 📸 แก้บั๊กเซฟภาพบนมือถือ ---
+        function saveImg() { 
+            const btnAdd = document.querySelector('.add-tier-btn'); const btnsDel = document.querySelectorAll('.tier-del-btn');
+            if(btnAdd) btnAdd.style.display = 'none'; btnsDel.forEach(b => b.style.display = 'none');
+            
+            // รีเซ็ตการ Scroll เพื่อไม่ให้ภาพแหว่ง
+            window.scrollTo(0, 0); 
+            
+            html2canvas(document.getElementById('capture-zone'), {
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                scale: 2,
+                scrollY: -window.scrollY // บังคับให้จับภาพจากจุดเริ่มต้นเสมอ
+            }).then(c => { 
+                const a=document.createElement('a'); a.download='tier-list.png'; a.href=c.toDataURL(); a.click(); 
+                if(btnAdd) btnAdd.style.display = 'block'; btnsDel.forEach(b => b.style.display = 'flex');
+            }).catch(err => {
+                alert("บันทึกภาพไม่สำเร็จ กรุณาลองเปิดผ่านเว็บบราวเซอร์ (Chrome/Safari)");
+                if(btnAdd) btnAdd.style.display = 'block'; btnsDel.forEach(b => b.style.display = 'flex');
+            }); 
+        }
+
         function toggleDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.toggle('open'); }
         function closeDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.remove('open'); }
         function updateCount() { document.getElementById('count').innerText = document.getElementById('pool').children.length; }
