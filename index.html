@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tier List 6/1 - Complete System</title>
+    <title>Tier List 6/1 - Eternal Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -26,11 +26,11 @@
         @keyframes bounceDrop { 0% { transform: scale(1); } 50% { transform: scale(1.15) rotate(5deg); } 70% { transform: scale(0.95) rotate(-5deg); } 100% { transform: scale(1) rotate(0); } }
         .bouncy { animation: bounceDrop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        /* --- Secret Triggers (ยึดมุมบน) --- */
+        /* --- Secret Triggers --- */
         .secret-trigger { position: fixed; top: 0; width: 80px; height: 80px; z-index: 9999; }
         #trigger-left { left: 0; } #trigger-right { right: 0; }
 
-        /* --- 📡 PRO ADMIN PANEL (Live Mirror) --- */
+        /* --- 📡 PRO ADMIN PANEL --- */
         #admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); color: #e2e8f0; z-index: 10000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
         #admin-panel.active { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -47,7 +47,7 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 11000; display: none; justify-content: center; align-items: center; }
         .modal-overlay.active { display: flex; }
         .modal-box { background: white; width: 90%; max-width: 320px; border-radius: 25px; padding: 25px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; margin: 15px 0; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; }
+        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; margin: 15px 0; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; color: #334155; }
         .btn-modal { padding: 12px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; flex: 1; font-family: 'Kanit'; }
 
         /* --- Floating UI --- */
@@ -63,28 +63,25 @@
         #q-text { font-size: 1.2rem; font-weight: 800; color: var(--accent); min-height: 35px; margin-bottom: 10px; }
         .btn-icon { width: 45px; height: 45px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        /* --- Tier Rows (Fix Shrink) --- */
+        /* --- Tier List --- */
         .tier-container { width: 100%; display: flex; flex-direction: column; gap: 8px; }
         .tier-row { display: flex; background: #f1f5f9; border-radius: 14px; overflow: hidden; min-height: 80px; position: relative; border: 2px solid #e2e8f0; }
-        .tier-del-btn { position: absolute; left: 4px; top: 4px; width: 20px; height: 20px; background: rgba(0,0,0,0.3); color: white; border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: bold; }
-        .tier-rank { width: 70px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: rgba(0,0,0,0.7); text-align: center; }
+        .tier-del-btn { position: absolute; left: 4px; top: 4px; width: 22px; height: 22px; background: rgba(0,0,0,0.2); color: white; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-weight: bold; }
+        .tier-rank { width: 70px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 800; color: rgba(0,0,0,0.7); text-align: center; cursor: text; }
         .tier-content { flex-grow: 1; padding: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; min-height: 80px; }
+        .add-tier-btn { background: rgba(0,0,0,0.05); border: 2px dashed #cbd5e1; color: #64748b; padding: 12px; margin-top: 10px; border-radius: 15px; text-align: center; cursor: pointer; width: 100%; font-weight: bold; }
         
-        .s { background: #fca5a5; } .a { background: #fdba74; } .b { background: #fde047; } .c { background: #86efac; } .d { background: #93c5fd; }
+        .s { background: #fca5a5; } .a { background: #fdba74; } .b { background: #fde047; } .c { background: #86efac; } .d { background: #93c5fd; } .new-tier { background: #e2e8f0; }
 
-        /* --- Friend Card --- */
-        .card {
-            width: 50px; height: 50px; background-size: cover; background-position: center; border-radius: 12px; cursor: grab; background-color: #cbd5e1;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15); flex-shrink: 0; touch-action: none; user-select: none;
-            transition: width 0.3s, height 0.3s, transform 0.2s;
-        }
+        /* --- Card --- */
+        .card { width: 50px; height: 50px; background-size: cover; background-position: center; border-radius: 12px; cursor: grab; background-color: #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.15); flex-shrink: 0; touch-action: none; user-select: none; transition: width 0.3s, height 0.3s, transform 0.2s; }
         .tier-content .card { width: 60px; height: 60px; }
         .card.male { border: 2px solid #38bdf8; } .card.female { border: 2px solid #f472b6; }
         .ghost-card { position: fixed; pointer-events: none; z-index: 99999; opacity: 0.9; transform: scale(1.1) rotate(5deg); width: 60px; height: 60px; border-radius: 12px; background-size: cover; background-position: center; }
 
         /* Easter Egg */
         .float-text { position: absolute; color: #fbbf24; font-weight: 800; font-size: 1.5rem; text-shadow: 2px 2px 0 #000; pointer-events: none; z-index: 9999; white-space: nowrap; animation: floatThenSpin 2.5s ease-in-out forwards; }
-        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -40px) scale(1.1); } 100% { opacity: 0; transform: translate(200px, -300px) scale(0.2) rotate(1080deg); } }
+        @keyframes floatThenSpin { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 10% { opacity: 1; transform: translate(0, -20px) scale(1); } 60% { opacity: 1; transform: translate(0, -50px) scale(1.1); } 100% { opacity: 0; transform: translate(200px, -300px) scale(0.2) rotate(1080deg); } }
 
         /* --- Drawer --- */
         .inventory-drawer { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); border-radius: 25px 25px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.15); z-index: 990; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(calc(100% - 45px)); display: flex; flex-direction: column; height: 35vh; min-height: 220px; border-top: 2px solid white; }
@@ -110,7 +107,7 @@
 
     <div id="admin-panel">
         <div class="admin-header">
-            <h2>📡 LIVE MONITOR</h2>
+            <h2>📡 LIVE FEED</h2>
             <div style="display:flex; gap:10px; align-items:center;">
                 <span id="online-count" style="background:#10b981; color:white; padding:5px 12px; border-radius:20px; font-weight:bold; font-size:0.8rem;">0 On</span>
                 <button onclick="closeAdminPanel()" style="background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:10px; cursor:pointer;">ปิด</button>
@@ -130,6 +127,14 @@
         </div>
     </div>
 
+    <div id="modal-input" class="modal-overlay">
+        <div class="modal-box">
+            <h3>✏️ ตั้งคำถาม</h3>
+            <input id="inp-q" class="modal-input" placeholder="...">
+            <button class="btn-modal" style="background:var(--accent); color:white; width:100%;" onclick="confirmAddQ()">เพิ่มเลย</button>
+        </div>
+    </div>
+
     <button class="btn-save-float" onclick="saveImg()">📸</button>
     <div id="trash-bin" class="trash-float">🗑️</div>
 
@@ -137,7 +142,7 @@
         <div class="capture-wrapper" id="capture-zone">
             <h1>✨ TIER LIST 6/1 ✨</h1>
             <div class="control-panel">
-                <div id="q-text">สุ่มคำถามจัดเทียร์!</div>
+                <div id="q-text">สุ่มหัวข้อจัดเทียร์!</div>
                 <div style="display:flex; justify-content:center; gap:15px;" data-html2canvas-ignore="true">
                     <button class="btn-icon" style="background:var(--accent); color:white;" onclick="spin()">🎲</button>
                     <button class="btn-icon" style="background:#10b981; color:white;" onclick="openInputModal()">➕</button>
@@ -146,26 +151,19 @@
             </div>
 
             <div class="tier-container" id="tier-stack">
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank s">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank a">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank b">โหด</div><div class="tier-content" id="tier-b"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank c">เฉยๆ</div><div class="tier-content" id="tier-c"></div></div>
-                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank d">พัก</div><div class="tier-content" id="tier-d"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank s" ondblclick="editTierName(this)">ที่สุด</div><div class="tier-content" id="tier-s"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank a" ondblclick="editTierName(this)">ตัวตึง</div><div class="tier-content" id="tier-a"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank b" ondblclick="editTierName(this)">โหด</div><div class="tier-content" id="tier-b"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank c" ondblclick="editTierName(this)">เฉยๆ</div><div class="tier-content" id="tier-c"></div></div>
+                <div class="tier-row"><div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank d" ondblclick="editTierName(this)">พัก</div><div class="tier-content" id="tier-d"></div></div>
             </div>
+            <div class="add-tier-btn" onclick="addNewTier()" data-html2canvas-ignore="true">➕ เพิ่มแถวใหม่</div>
         </div>
     </div>
 
     <div class="inventory-drawer" id="drawer">
         <div class="drawer-header" onclick="toggleDrawer()"><div class="drawer-handle"></div></div>
         <div class="drawer-content" id="pool"></div>
-    </div>
-
-    <div id="modal-input" class="modal-overlay">
-        <div class="modal-box">
-            <h3>✏️ ตั้งคำถาม</h3>
-            <input id="inp-q" class="modal-input" placeholder="...">
-            <button class="btn-modal" style="background:var(--accent); color:white; width:100%;" onclick="confirmAddQ()">เพิ่มเลย</button>
-        </div>
     </div>
 
     <script type="module">
@@ -179,14 +177,12 @@
         const userRef = ref(db, 'live_mirror/' + userId);
 
         window.syncScreen = () => {
-            set(userRef, {
-                q: document.getElementById('q-text').innerText,
-                s: getIds('tier-s'), a: getIds('tier-a'), b: getIds('tier-b'), c: getIds('tier-c'), d: getIds('tier-d'),
-                pool: getIds('pool').length, time: Date.now()
-            });
+            const tiers = Array.from(document.querySelectorAll('.tier-row')).map(row => ({
+                name: row.querySelector('.tier-rank').innerText,
+                items: Array.from(row.querySelector('.tier-content').children).map(c => c.id.replace('card-', ''))
+            }));
+            set(userRef, { q: document.getElementById('q-text').innerText, tiers, pool: document.getElementById('pool').children.length, time: Date.now() });
         };
-
-        function getIds(id) { const el = document.getElementById(id); return el ? Array.from(el.children).map(c => c.id.replace('card-', '')) : []; }
         onDisconnect(userRef).remove();
 
         window.startAdminMonitor = () => {
@@ -200,15 +196,8 @@
                     const buildImgs = (arr) => (arr||[]).map(num => `<div class="mini-img" style="background-image:url('${num}.jpg')"></div>`).join('');
                     const card = document.createElement('div');
                     card.className = 'mirror-card';
-                    card.innerHTML = `
-                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="color:#38bdf8; font-weight:bold;">👤 ${uid}</span></div>
-                        <div class="mc-topic">📝 ${u.q}</div>
-                        <div class="mini-tier"><div class="mini-rank" style="background:#fca5a5">ที่สุด</div><div class="mini-content">${buildImgs(u.s)}</div></div>
-                        <div class="mini-tier"><div class="mini-rank" style="background:#fdba74">ตัวตึง</div><div class="mini-content">${buildImgs(u.a)}</div></div>
-                        <div class="mini-tier"><div class="mini-rank" style="background:#fde047">โหด</div><div class="mini-content">${buildImgs(u.b)}</div></div>
-                        <div class="mini-tier"><div class="mini-rank" style="background:#86efac">เฉยๆ</div><div class="mini-content">${buildImgs(u.c)}</div></div>
-                        <div class="mini-tier"><div class="mini-rank" style="background:#93c5fd">พัก</div><div class="mini-content">${buildImgs(u.d)}</div></div>
-                    `;
+                    let tiersHtml = (u.tiers || []).map(t => `<div class="mini-tier"><div class="mini-rank">${t.name}</div><div class="mini-content">${buildImgs(t.items)}</div></div>`).join('');
+                    card.innerHTML = `<div style="margin-bottom:8px; font-weight:bold; color:#38bdf8;">👤 ${uid}</div><div class="mc-topic">📝 ${u.q}</div>${tiersHtml}`;
                     grid.appendChild(card);
                 });
             });
@@ -218,7 +207,7 @@
     <script>
         const config = { total: 28, maleMax: 12 };
         const eggs = { "card-6": "รุ่นใหญ่", "card-3": "เอกชัย", "card-8": "จารโป๊ะ", "card-21": "ข้าวมันไก่", "card-22": "จารบิ๊ก", "card-26": "หมางอย", "card-28": "สพต" };
-        let questions = ["จัดอันดับคนปากเหม็น", "จัดอันดับคนน่ารัก", "ใครเรียนเก่งที่สุด", "ใครสายเปย์ที่สุด", "ใครสายฮาที่สุด"];
+        let questions = ["ใครตึงสุด", "ใครเรียนเก่งที่สุด", "ใครปากเหม็นที่สุด", "ใครน่ารักที่สุด", "ใครสายฮา"];
         let activeCard = null; let ghost = null; let offsetX = 0, offsetY = 0;
 
         window.onload = () => {
@@ -238,6 +227,7 @@
             bindDesktopDropZones();
         };
 
+        // --- Custom Touch System ---
         function handleTouchStart(e) {
             if(e.touches.length > 1) return;
             activeCard = this;
@@ -293,6 +283,30 @@
             });
         }
 
+        // --- Tier Logic ---
+        function editTierName(el) {
+            const newName = prompt("เปลี่ยนชื่อเทียร์เป็น:", el.innerText);
+            if(newName) { el.innerText = newName; if(window.syncScreen) window.syncScreen(); }
+        }
+
+        function addNewTier() {
+            const container = document.getElementById('tier-stack');
+            const row = document.createElement('div');
+            row.className = 'tier-row';
+            row.innerHTML = `<div class="tier-del-btn" onclick="handleRemoveTier(this)">×</div><div class="tier-rank new-tier" ondblclick="editTierName(this)">ใหม่</div><div class="tier-content"></div>`;
+            container.appendChild(row);
+            bindDesktopDropZones();
+            if(window.syncScreen) window.syncScreen();
+        }
+
+        function handleRemoveTier(btn) {
+            if(confirm("ลบแถวนี้?")) {
+                btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c));
+                btn.parentElement.remove();
+                if(window.syncScreen) window.syncScreen();
+            }
+        }
+
         function triggerEgg(card) {
             if(eggs[card.id]) {
                 const r = card.getBoundingClientRect();
@@ -313,18 +327,15 @@
         function closeAdminPanel() { document.getElementById('admin-panel').classList.remove('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openInputModal() { document.getElementById('modal-input').classList.add('active'); }
-        function confirmAddQ() { const v = document.getElementById('inp-q').value; if(v) { document.getElementById('q-text').innerText = v; window.syncScreen(); } closeModal('modal-input'); }
-        function handleReset() { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); window.syncScreen(); }
-        function handleRemoveTier(btn) { btn.parentElement.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); btn.parentElement.remove(); window.syncScreen(); }
-        function spin() { let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15) { clearInterval(t); window.syncScreen(); } }, 60); }
+        function confirmAddQ() { const v = document.getElementById('inp-q').value; if(v) { document.getElementById('q-text').innerText = v; if(window.syncScreen) window.syncScreen(); } closeModal('modal-input'); }
+        function handleReset() { if(confirm("ล้างกระดาน?")) { document.querySelectorAll('.card').forEach(c => document.getElementById('pool').appendChild(c)); if(window.syncScreen) window.syncScreen(); } }
+        function spin() { let c=0; const t=setInterval(()=>{ document.getElementById('q-text').innerText=questions[Math.floor(Math.random()*questions.length)]; c++; if(c>15) { clearInterval(t); if(window.syncScreen) window.syncScreen(); } }, 60); }
         function saveImg() { 
-            document.querySelector('.btn-save-float').style.display = 'none';
-            document.querySelector('.trash-float').style.display = 'none';
-            window.scrollTo(0,0);
+            const b1 = document.querySelector('.btn-save-float'); const b2 = document.querySelector('.trash-float');
+            b1.style.display = 'none'; b2.style.display = 'none'; window.scrollTo(0,0);
             html2canvas(document.getElementById('capture-zone'),{backgroundColor:'#f1f5f9',useCORS:true,scale:2,scrollY:-window.scrollY}).then(c=>{
                 const a=document.createElement('a'); a.download='tier.png'; a.href=c.toDataURL(); a.click();
-                document.querySelector('.btn-save-float').style.display = 'flex';
-                document.querySelector('.trash-float').style.display = 'flex';
+                b1.style.display = 'flex'; b2.style.display = 'flex';
             });
         }
         function toggleDrawer() { if(window.innerWidth<1024) document.getElementById('drawer').classList.toggle('open'); }
